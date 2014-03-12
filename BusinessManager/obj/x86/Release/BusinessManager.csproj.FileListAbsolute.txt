@@ -1,0 +1,15 @@
+C:\programming\BusinessManager\bin\Release\MainDB.sdf
+C:\programming\BusinessManager\bin\Release\BusinessManager.exe.config
+C:\programming\BusinessManager\bin\Release\BusinessManager.exe
+C:\programming\BusinessManager\bin\Release\BusinessManager.pdb
+C:\programming\BusinessManager\obj\x86\Release\ResolveAssemblyReference.cache
+C:\programming\BusinessManager\obj\x86\Release\BusinessManager.AddNewInventoryForm.resources
+C:\programming\BusinessManager\obj\x86\Release\BusinessManager.AddNewSellForm.resources
+C:\programming\BusinessManager\obj\x86\Release\BusinessManager.InventoryListForm.resources
+C:\programming\BusinessManager\obj\x86\Release\BusinessManager.MainForm.resources
+C:\programming\BusinessManager\obj\x86\Release\BusinessManager.Properties.Resources.resources
+C:\programming\BusinessManager\obj\x86\Release\BusinessManager.SellHistoryForm.resources
+C:\programming\BusinessManager\obj\x86\Release\GenerateResource.read.1.tlog
+C:\programming\BusinessManager\obj\x86\Release\GenerateResource.write.1.tlog
+C:\programming\BusinessManager\obj\x86\Release\BusinessManager.exe
+C:\programming\BusinessManager\obj\x86\Release\BusinessManager.pdb
