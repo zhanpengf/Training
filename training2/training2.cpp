@@ -5,6 +5,58 @@
 #include "library.cpp"
 #include <time.h>
 
+void permutationAndShuffle()
+// permutation 
+{
+	time_t start,end;
+	int size = 3; 
+	std::vector<int> sortedArray = uber::initSortedArray(size);
+
+	std::vector<std::vector<int>> output2;
+	time (&start);
+	uber::permute2(sortedArray, 0, output2);
+	time (&end);
+	double dif2 = difftime (end,start); 
+	//std::vector<std::vector<int>>().swap(output2); //free memory
+
+	//std::vector<std::vector<int>> output1; 
+	//time (&start);
+	//uber::permute(sortedArray, 0, output1);
+	//time (&end); 
+	//double dif1 = difftime (end,start); 
+	////std::vector<std::vector<int>>().swap(output1);  //free memory
+
+	// check if shuffle works well
+	const int permuteCount = output2.size();
+	int histogram[6];
+	for (int j = 0; j < permuteCount; j++)
+	{
+		histogram[j] = 0; 
+	}
+
+	for (int i = 0; i <1000000; i++)
+	{
+		sortedArray = uber::initSortedArray(size);
+		uber::shuffle(sortedArray);
+		for (int j = 0; j < permuteCount; j++)
+		{
+			int k = 0; 
+			for (k = 0; k < size; k++)
+			{
+				if (sortedArray[k] != output2[j][k])
+				{
+					break; 
+				}
+			}
+			if (k == size)
+			{
+				histogram[j]++; 
+				break; 
+			}
+		}
+	}
+	// end check if shuffle works well		
+}
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -26,55 +78,22 @@ int _tmain(int argc, _TCHAR* argv[])
 		bool isBST = uber::isBST(BST); 
 	}
 
-	// permutation 
+	//permutationAndShuffle(); 
+
 	{
-		int size = 3; 
-		std::vector<int> sortedArray = uber::initSortedArray(size);
+		bool isPowerOf2 = uber::isPowerOf2(17); 
+		int count = uber::countDifBits(170, 112);
+	}
 
-		std::vector<std::vector<int>> output2;
-		time (&start);
-		uber::permute2(sortedArray, 0, output2);
-		time (&end);
-		double dif2 = difftime (end,start); 
-		//std::vector<std::vector<int>>().swap(output2); //free memory
+	{
+		Hanoi hanoi1; 
+		hanoi1.initStack(6);
+		hanoi1.hanoi(5, hanoi1.tower1, hanoi1.tower2, hanoi1.tower3); 
+	}
 
-		//std::vector<std::vector<int>> output1; 
-		//time (&start);
-		//uber::permute(sortedArray, 0, output1);
-		//time (&end); 
-		//double dif1 = difftime (end,start); 
-		////std::vector<std::vector<int>>().swap(output1);  //free memory
-
-		// check if shuffle works well
-		const int permuteCount = output2.size();
-		int histogram[6];
-		for (int j = 0; j < permuteCount; j++)
-		{
-			histogram[j] = 0; 
-		}
-
-		for (int i = 0; i <1000000; i++)
-		{
-			sortedArray = uber::initSortedArray(size);
-			uber::shuffle(sortedArray);
-			for (int j = 0; j < permuteCount; j++)
-			{
-				int k = 0; 
-				for (k = 0; k < size; k++)
-				{
-					if (sortedArray[k] != output2[j][k])
-					{
-						break; 
-					}
-				}
-				if (k == size)
-				{
-					histogram[j]++; 
-					break; 
-				}
-			}
-		}
-		// end check if shuffle works well		
+	{
+		LinkedList linkedList; 
+		linkedList.testReverseLinkedList(); 
 	}
 	return 0;
 }
