@@ -95,6 +95,22 @@ int _tmain(int argc, _TCHAR* argv[])
 		LinkedList linkedList; 
 		linkedList.testReverseLinkedList(); 
 	}
+	{
+		std::string result = uber::removeDuplicate("abaaabbb"); 
+		std::string reverse = uber::reverseWords("   i         am happily a family man   "); 
+	}
+
+	{
+		int test[5] = {-1, 4, -1, 4, 2}; 
+		int size = sizeof(test)/sizeof(int); 
+		int result = uber::largestSum(test, size); 
+		int a = result; 
+	}
+
+	{
+		char test[] = "1 223 65 -1 4 89"; 
+		std::vector<int> result = uber::stringToIntArray(test); 
+	}
 	return 0;
 	//test
 }

@@ -3,6 +3,7 @@
 #include <stack>
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 
 struct TreeNode
 {
@@ -197,6 +198,170 @@ public:
 		return count; 
 	}
 
+	static std::string removeDuplicate(std::string input)
+	{
+		if (input.size() == 0)
+		{
+			return ""; 
+		}
+		std::string result; 
+		char currentChar = input[0]; 
+		int i = 0; 
+		int j = 0; 
+		while (i < input.size())
+		{
+			input[j] = currentChar;
+			while ((i<input.size())&&(input[i] == currentChar))
+			{
+				i++;
+			}
+			j ++; 
+			if (i < input.size())
+			{
+				currentChar = input[i]; 
+			}
+		}
+		return input.substr(0,j); 
+	}
+
+	static std::string reverseWords(std::string input)
+	{
+		int size = input.size(); 
+		if (size == 0)
+		{
+			return ""; 
+		}
+		for (int i = 0; i < size/2; i++)
+		{
+			char temp = input[size - 1 - i]; 
+			input[size - 1 - i] = input[i]; 
+			input[i] = temp; 
+		}
+		int i = 0; 
+		int j = 0; 
+		for (int i = 0; i < size; i++)
+		//while (i < size)
+		{
+			j = i; 
+			while ((j < size) && (input[j] != (' ')))
+			{
+				j++; 
+			}
+			int subSize = j - i; 
+			for (int k = i; k < i + subSize / 2; k++)
+			{
+				char temp = input[k]; 
+				input[k] = input[2 * i + subSize - k - 1]; 
+				input[2 * i + subSize - k - 1] = temp;  
+			}
+			i = j; 
+		}
+		return input; 
+	}
+
+		// find largest sum sub string
+	static int largestSum(int arr[], int size)
+	{
+		// we scan from right to left, if the left element is smaller than the right next element, increase the running sum by the value of the left element. 
+		// otherwise compare the running sum with the current largest sum, and store the larger of the two as the largest sum, and retart calculating the running surm. 
+		// int size = sizeof(arr)/sizeof(int); 
+		int runningSum = arr[size - 1]; 
+		int largestSum = arr[size - 1]; 
+		for (int i = size - 2; i >= 0; i--)
+		{
+			int temp = runningSum + arr[i]; 
+			if (arr[i] > temp)
+			{
+				runningSum = arr[i];   
+			}
+			else
+			{
+				runningSum = temp; 
+			}
+
+
+			if (runningSum > largestSum)
+			{
+				largestSum = runningSum; 
+			}
+		}
+		//return runningSum;
+		return largestSum; 
+	}
+
+	static std::vector<int> stringToIntArray( char *line ) 
+	{
+		std::vector<int> result; 
+		int num, i = 0, len;
+		while ( sscanf( line, "%d%n", &num, &len) == 1 ) 
+		{
+			//printf( "Number %d is %d\n", i, num );
+			result.push_back(num); 
+			line += len;    // step past the number we found
+			i++;            // increment our count of the number of values found
+		}
+		return result; 
+	}
+
+	//static int largestSumMatrix(std::vector<std::vector<int>> ma,  int colSize,int rowSize)
+	//{
+
+	//	// find the sum of every matrix starting at (0,0)
+	//	// the sum of sub matrix (top, left) to (bottom, right) is equal to sum(bottom,right) - sum(top, right) - sum(bototm, left) + sum(top, left)
+	//	//int **sum; 
+	//	//sum = new int*[rowSize]; 
+	//	//for (int i = 0; i < rowSize; i++)
+	//	//{
+	//	//	sum[i] = new int[colSize]; 
+	//	//}
+	//	const int m = rowSize; 
+	//	const int n = colSize; 
+	//	int sum[m][n]; 
+	//	for (int i = 0; i < rowSize; i ++)
+	//		for (int j = 0; j < colSize; j++)
+	//		{
+	//			sum[i][j]
+	//		}
+
+	//}
+
+//	int largestSquare(std::vector<std::vector<int>>& matrix) {
+//    if (matrix.size() < 1 || matrix[0].size() < 1) {
+//		return 0;
+//	}
+//    const int m = (const int)matrix.size();
+//    const int n = (const int)matrix[0].size();
+//    int temp[m][n];
+//
+//	// initialize the borders (our base cases)
+//	for (int r = 0; r < m; r++) {
+//		temp[r][0] = matrix[r][0];
+//	}
+//	for (int c = 0; c < n; c++) {
+//		temp[0][c] = matrix[0][c];
+//	}
+//
+//	for (int r = 1; r < m; r++) {
+//		for (int c = 1; c < n; c++) {
+//			if (matrix[r][c] == 1) {
+//				temp[r][c] = 1 + min(temp[r][c-1],
+//								min(temp[r-1][c],
+//								temp[r-1][c-1]));
+//			} else {
+//				temp[r][c] = 0;
+//			}
+//		}
+//	}
+//	// find the largest entry
+//	int maxV = INT_MIN;
+//	for (int r = 0; r < m; r++) {
+//		for (int c = 0; c < n; c++) {
+//			maxV = max(maxV, temp[r][c]);
+//		}
+//	}
+//    return maxV;
+//}
+
 
 };
 
@@ -332,4 +497,8 @@ public:
 
 	}
 	/// end testReverseLinkedList
+
+
+
+
 }; 
