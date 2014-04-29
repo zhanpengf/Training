@@ -73,5 +73,10 @@ namespace BusinessManager
             //this.Hide();
             //e.Cancel = true; // this cancels the close event.
         }
+
+        private void numericUpDownPurchasingPriceBeforeTax_ValueChanged(object sender, EventArgs e)
+        {
+            numericPurchasingPrice.Value = numericUpDownPurchasingPriceBeforeTax.Value * (1+numericUpDownTaxRate.Value / 100); 
+        }
     }
 }
