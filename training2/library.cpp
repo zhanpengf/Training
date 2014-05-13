@@ -5,6 +5,8 @@
 #include <time.h>
 #include <stdio.h>
 
+using namespace std; 
+
 struct TreeNode
 {
 	int val;
@@ -299,6 +301,46 @@ public:
 			result.push_back(num); 
 			line += len;    // step past the number we found
 			i++;            // increment our count of the number of values found
+		}
+		return result; 
+	}
+
+	static vector<int> findDuplicates(vector<int> &a1, vector<int> &a2)
+	{
+		vector<int> result; 
+		int size1 = a1.size(); 
+		int size2 = a2.size();
+		int i = 0; 
+		int j = 0; 
+		while ((i < size1) && (j < size2))
+		{
+			if (a1[i] < a2[j])
+			{
+				i++;
+				continue; 
+			}
+			if (a1[i] > a2[j])
+			{
+				j++;
+				continue; 
+			}
+			if (a1[i] == a2[j])
+			{
+				result.push_back(a1[i]);
+				while (( i + 1 < size1) && (a1[i+1] == a1[i]))
+				{
+					i++; 
+				}
+				while (( j + 1 < size2) && (a2[j+1] == a2[j]))
+				{
+					j++; 
+				}
+				i++;
+				j++; 
+				continue;  
+			}
+			
+			
 		}
 		return result; 
 	}

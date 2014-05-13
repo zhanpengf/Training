@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "library.cpp"
 #include <time.h>
+using namespace std; 
 
 void permutationAndShuffle()
 // permutation 
@@ -110,6 +111,14 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		char test[] = "1 223 65 -1 4 89"; 
 		std::vector<int> result = uber::stringToIntArray(test); 
+	}
+
+	{
+		static const int a1[] = {1, 2, 3, 3, 4, 5, 6, 7, 8, 9 };
+		vector<int> v1 (a1, a1 + sizeof(a1) / sizeof(a1[0]) );
+		static const int a2[] = {2, 3, 3, 3, 4, 5};
+		vector<int> v2 (a2, a2 + sizeof(a2) / sizeof(a2[0]) );
+		vector<int> duplicates = uber::findDuplicates(v1, v2); 
 	}
 	return 0;
 	//test
