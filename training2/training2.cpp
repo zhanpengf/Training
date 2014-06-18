@@ -120,6 +120,21 @@ int _tmain(int argc, _TCHAR* argv[])
 		vector<int> v2 (a2, a2 + sizeof(a2) / sizeof(a2[0]) );
 		vector<int> duplicates = uber::findDuplicates(v1, v2); 
 	}
+	{
+		vector<string> result; 
+		uber::permuteParenthesis(0, 0, 3, "", result); 
+		vector<string> result2; 
+		uber::permuteParenthesis2(0, 0, 3, "", result2); 
+		 
+		vector<string> result3; 
+		char mychars[] = {'(',')'};
+		std::vector<char> chars (mychars, mychars + sizeof(mychars) / sizeof(char) );
+		std::vector<int> currentCount(2,0); 
+		int myTotalCount[] = {3,3}; 
+		std::vector<int> totalCount(myTotalCount, myTotalCount + sizeof(myTotalCount) / sizeof(int)); 
+		uber::permuteStringWithDuplicates(chars, currentCount, totalCount, "", result3);  
+		//uber::DFS(3,0,0,"",result); 
+	}
 	return 0;
 	//test
 }

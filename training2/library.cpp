@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
+#include <string>
 
 using namespace std; 
 
@@ -344,6 +345,130 @@ public:
 		}
 		return result; 
 	}
+
+	static void permuteParenthesis(int r, int l, int n, string currentStr, vector<string> &result)
+	{
+		if (r==n) 
+		{
+			result.push_back(currentStr); 
+			return; 
+		}
+		if (l<n)
+		{
+			permuteParenthesis(r, l+1, n, currentStr +"(", result); 
+		}
+		if (r<l)
+		{
+			permuteParenthesis(r+1, l, n, currentStr +")", result); 
+		}
+	}
+
+	// intened to generated all permutations without vaild parenthesis constraint. doesn't work. 
+	static void permuteParenthesis2(int r, int l, int n, string currentStr, vector<string> &result)
+	{
+		if ((r==n) && (l==n))
+		{
+			result.push_back(currentStr); 
+			return; 
+		}
+
+		if (l<n)
+		{
+			permuteParenthesis(r, l+1, n, currentStr +"(", result);
+		}
+		if (r<n)
+		{
+			permuteParenthesis(r+1, l, n, currentStr +")", result);
+		}
+	}
+
+	// works. 
+	static void permuteStringWithDuplicates(vector<char> &chars, vector<int> &currentCount,  vector<int> totalCount, string currentStr, vector<string> &result)
+	{
+		int size = chars.size(); 
+		bool done = true; 
+		for (int i = 0; i < size; i++)
+		{
+			if (currentCount[i] != totalCount[i] )
+			{
+				done = false; 
+				break;
+			}
+		}
+
+		if (done)
+		{
+			result.push_back(currentStr); 
+			return; 
+		}
+
+		for (int i = 0; i < size; i++)
+		{			
+			if (currentCount[i] < totalCount[i])
+			{
+				currentCount[i]++;
+				permuteStringWithDuplicates(chars, currentCount, totalCount, currentStr + chars[i], result); 
+				currentCount[i]--; // this line is the key
+			}
+		}		
+	}
+
+
+//
+//	#include <iostream>
+//#include <stack>
+//using namespace std;
+//
+//const char leftP[] = "([{";
+//const char rightP[] = ")]}";
+//
+//void generateParentheses(int n[], int l[], int r[], stack<char> s, string sol) {
+//    bool ok = true;
+//    for (int i = 0; i < 3; i++) {
+//        if (r[i] < n[i]) {
+//            ok = false;
+//            break;
+//        }
+//    }
+//    if (ok) {
+//        cout << sol << endl;
+//    }
+//    
+//    for (int i = 0; i < 3; i++) {
+//        if (l[i] < n[i]) {
+//            s.push(leftP[i]);
+//            l[i]++;
+//            generateParentheses(n, l, r, s, sol+leftP[i]);
+//            s.pop();
+//            l[i]--;
+//        }
+//    }
+//    for (int i = 0; i < 3; i++) {
+//        if (r[i] < l[i]) {
+//            if (s.top() == leftP[i]) {
+//                s.pop();
+//                r[i]++;
+//                generateParentheses(n, l, r, s, sol+rightP[i]);
+//                s.push(leftP[i]);
+//                r[i]--;
+//            }
+//        }
+//    }
+//}
+
+//int main()
+//{
+//    int n[] = {1, 2, 1}; // number for each type of parentheses
+//    int l[] = {0, 0, 0}; // number of left parentheses that have been generated
+//    int r[] = {0, 0, 0}; // ..........right........
+//    stack<char> s;
+//    string sol;
+//    generateParentheses(n, l, r, s, sol);  
+//    return 0;
+//}
+
+
+
 
 	//static int largestSumMatrix(std::vector<std::vector<int>> ma,  int colSize,int rowSize)
 	//{
