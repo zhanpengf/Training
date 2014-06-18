@@ -4,6 +4,13 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
+#include <math.h>
+#include <algorithm>
+#include <string>
+
+#include <iostream>
+#include <unordered_set>
+using namespace std;
 
 struct TreeNode
 {
@@ -124,6 +131,105 @@ public:
 		return (isBSTHelper(root->left, min, val) && isBSTHelper(root->right, val, max));  
 	}
 
+	static TreeNode * findLowestAncestor(TreeNode *node1, TreeNode *node2, TreeNode *root)
+	{
+		if (root == NULL)
+		{
+			return NULL; 
+		}
+		if ((root == node1)||(root == node2))
+		{
+			return root; 
+		}
+		TreeNode *Left = findLowestAncestor(node1, node2, root->left); 
+		TreeNode *Right = findLowestAncestor(node1, node2, root->right); 
+		if ((Left != NULL)&&(Right != NULL))
+		{
+			return root; 
+		}
+		else
+		{
+			return Left?Left:Right; 
+		}
+	}
+
+	//static TreeNode * findLowestAncestor2(TreeNode *node1, TreeNode *node2, TreeNode *root)
+	//{
+	//	std::vector<TreeNode*> node1path; 
+	//	std::vector<TreeNode*> node2path; 
+
+	//	TreeNode* currentNode = node1; 
+	//	while (currentNode->
+	//}
+
+
+	// Find the largest number in a BST that is smaller than x 
+	// recursively search in the BST's left subtree and right subtree.
+	// 
+	// If x > root, the solution is larger of the root and solution of the right tree, 
+	// otherwise, the solution is in the left tree
+	static int findLargestSmallerThanXinBST(TreeNode* root, int x)
+	{
+		int currentSolution = INT_MIN; 
+		if (root == NULL)
+		{
+			return INT_MIN; 
+		}
+		if (x<=root->val)
+		{
+			currentSolution = findLargestSmallerThanXinBST(root->left, x); 
+		}
+		else
+		{
+			currentSolution = std::max(findLargestSmallerThanXinBST(root->right, x), root->val); 
+		}
+		return currentSolution;
+	}
+
+	static int find(TreeNode* root, int x) {
+		TreeNode* curr = root;
+		int result = x;
+		while (curr) {
+			if (curr->val >= x) {
+				curr = curr->left;
+			} else {
+				result = curr->val;
+				curr = curr->right;
+			}
+		}
+		return result;
+	}
+	// find the number that is closest to x in a BST
+	static int findClosestToXinBST(TreeNode *root, int x, int &smallestDiff)
+	{	
+		if (root == NULL)
+		{
+			return INT_MIN; 
+		}
+		if (root->val == x)
+		{
+			smallestDiff = 0; 
+			return x; 
+		}
+		int currentSolution; 
+		if (root->val > x)
+		{
+			currentSolution = findClosestToXinBST(root->left, x, smallestDiff); 
+		}
+		else
+		{
+			currentSolution = findClosestToXinBST(root->right, x, smallestDiff); 
+		}
+
+		int rootDiff = std::abs(x-root->val); 
+		if (rootDiff < smallestDiff)
+		{
+			currentSolution = root->val;
+			smallestDiff = rootDiff; 
+		}
+		return currentSolution; 
+
+	}
 
 
 	static void permute(std::vector<int> &input, int head, std::vector<std::vector<int>> &output)
@@ -302,6 +408,151 @@ public:
 		}
 		return result; 
 	}
+
+	static int largestRectangleArea(vector<int> &height) {
+		stack<int> S;
+		height.push_back(0);
+		int result = 0;
+		for (int i = 0; i < height.size(); ) {
+			if (S.empty() || height[i] > height[S.top()]) {
+				S.push(i);
+				i++;
+			} else {
+				int tmp = S.top();
+				S.pop();
+				int width = S.empty() ? i : i - S.top() - 1;
+				int area = height[tmp] * width;
+				result = max(result, area);
+			}
+		}
+		return result;
+	}
+
+
+	/// doesn't work, because my stack stores the height value not the height index. Index is needed to compute the width. 
+	/// My way of computing width is wrong, it only works for monotonically ascending array. 
+	static int largestRectangleAreaFeng(vector<int> &height) {
+		stack<int> S;
+		height.push_back(0);
+		int result = 0;
+		for (int i = 0; i < height.size(); i++) {
+			if (S.empty() || height[i] >= S.top()) {
+				S.push(height[i]);
+			} else {
+				int width = 1; 
+				while ( !S.empty() && (S.top() > height[i]))
+				{
+					int height = S.top();
+					int area = width * height; 
+					width ++; 
+					S.pop();
+					result = result > area ? result:area; 
+				}
+
+			}
+		}
+		return result;
+	}
+
+	// parentheses
+	static void DFS(int n, int l, int r, string s, vector<string> &result) {
+		if (r == n) {
+			result.push_back(s);
+			return;
+		}
+		if (l < n) {
+			DFS(n, l+1, r, s+"(", result);
+		}
+		if (r < l) {
+			DFS(n, l, r+1, s+")", result);
+		}
+	}
+
+	static vector<string> generateParenthesis(int n) {
+		vector<string> result;
+		DFS(n, 0, 0, "", result);
+		return result;
+	}
+
+
+
+	static void generateParentheses(int n[], int l[], int r[], stack<char> s, string sol) {
+		static const char leftP[] = "([{";
+		static const char rightP[] = ")]}";
+		bool ok = true;
+		for (int i = 0; i < 3; i++) {
+			if (r[i] < n[i]) {
+				ok = false;
+				break;
+			}
+		}
+		if (ok) {
+			cout << sol << endl;
+			return; 
+		}
+    
+		for (int i = 0; i < 3; i++) {
+			if (l[i] < n[i]) {
+				s.push(leftP[i]);
+				l[i]++;
+				generateParentheses(n, l, r, s, sol+leftP[i]);
+				s.pop();
+				l[i]--;
+			}
+		}
+		for (int i = 0; i < 3; i++) {
+			if (r[i] < l[i]) {
+				if (s.top() == leftP[i]) {
+					s.pop();
+					r[i]++;
+					generateParentheses(n, l, r, s, sol+rightP[i]);
+					s.push(leftP[i]);
+					r[i]--;
+				}
+			}
+		}
+	}
+
+	static void permuteString(string &s, int start, int length, vector<string> &result)
+	{
+	  if (start == length - 1)
+	  {
+		result.push_back(s); 
+		return;   
+	  }
+	  for (int i = start; i < length; i++)
+	  {
+		swap(s, start, i); 
+		permuteString(s, start+1, length, result); 
+		swap(s, i, start); 
+	  }
+	}
+
+	static void permuteStringWithDuplicate(string &s, int start, int length, vector<string> &result)
+	{
+	  if (start == length - 1)
+	  {
+		result.push_back(s); 
+		return;   
+	  }
+	  for (int i = start; i < length; i++)
+	  {
+		if (s[i]!=s[start])
+		{
+			swap(s, start, i); 
+			permuteStringWithDuplicate(s, start+1, length, result); 
+			swap(s, i, start); 
+		}
+	  }
+	}
+
+	static void swap(string &s, int index1, int index2)
+	{
+	  char temp = s[index1]; 
+	  s[index1] = s[index2];
+	  s[index2] = temp; 
+	}
+
 
 	//static int largestSumMatrix(std::vector<std::vector<int>> ma,  int colSize,int rowSize)
 	//{
@@ -502,3 +753,35 @@ public:
 
 
 }; 
+
+class LongestString
+{
+public: 
+	// Sort words by length in descending order
+//bool &comp(const string &a, const string &b) {
+//    return a.size() > b.size();
+//}
+
+// Time Complexity: O(nm^2 + nlogn), where n is number of words and
+// m is average length of words
+// Space Complexity: O(n)
+//string longestWord(vector<string> &dict) {
+//    unordered_set<string> set;
+//    sort(dict.begin(), dict.end(), comp);
+//    for (int i = 0; i < dict.size(); i++) {
+//        set.insert(dict[i]);
+//    }
+//    //for (int i = 0; i < dict.size(); i++) {
+//    //    for (int k = 1; k < dict[i].size(); k++) {
+//    //        string substr1 = dict[i].substr(0, k);
+//    //        string substr2 = dict[i].substr(k);
+//    //        if (set.find(substr1) != set.end() && 
+//    //            set.find(substr2) != set.end()) {
+//    //            return dict[i];
+//    //        }
+//    //    }
+//    //    break;
+//    //}
+//    return "";
+//}
+};
