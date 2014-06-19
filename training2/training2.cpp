@@ -175,11 +175,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		vector<string> result; 
 		uber::permuteString(s, 0, 5, result); 
 	}
-	{
-		string s = "aabcd"; 
-		vector<string> result; 
-		uber::permuteStringWithDuplicate(s, 0, 5, result); 
-	}
+
 
 	{
 		static const int a1[] = {1, 2, 3, 3, 4, 5, 6, 7, 8, 9 };
@@ -191,8 +187,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		vector<string> result; 
 		uber::permuteParenthesis(0, 0, 3, "", result); 
-		vector<string> result2; 
-		uber::permuteParenthesis2(0, 0, 3, "", result2); 
+		vector<string> result2;
 		 
 		vector<string> result3; 
 		char mychars[] = {'(',')'};
@@ -200,8 +195,35 @@ int _tmain(int argc, _TCHAR* argv[])
 		std::vector<int> currentCount(2,0); 
 		int myTotalCount[] = {3,3}; 
 		std::vector<int> totalCount(myTotalCount, myTotalCount + sizeof(myTotalCount) / sizeof(int)); 
-		uber::permuteStringWithDuplicates(chars, currentCount, totalCount, "", result3);  
+		uber::permuteStringWithDuplicates(chars, currentCount, totalCount, "", result3); 
+
+		vector<string> result4;
+		uber::permuteStringWithDuplicatesParen(chars, currentCount, totalCount, "", result4); 
 		//uber::DFS(3,0,0,"",result); 
+	}
+
+	{
+		vector<string> result3; 
+		char mychars[] = {'(','[','{',')',']', '}'};
+		std::vector<char> chars (mychars, mychars + sizeof(mychars) / sizeof(char) );
+		std::vector<int> currentCount(6,0); 
+		int myTotalCount[] = {1,1,2,1,1,2}; 
+		std::vector<int> totalCount(myTotalCount, myTotalCount + sizeof(myTotalCount) / sizeof(int)); 
+		
+		vector<string> result4;
+		stack<char> S; 
+		uber::permuteStringWithDuplicatesParenMulti(chars, currentCount, totalCount, "", S, result4);
+	}
+	{
+		int myJobs[] = { 1, 2, 3, 4, 5};
+		std::vector<int> jobs(myJobs, myJobs + sizeof(myJobs) / sizeof(int)); 
+		std::vector<vector<int>> servers(3,vector<int>(0,0));
+		vector<vector<vector<int>>> result; 
+		uber::findAssignment(jobs, servers, 0, result); 
+		int k347 = uber::findKthSmallest347(3); 
+		k347 = uber::findKthSmallest347(4); 
+		k347 = uber::findKthSmallest347(5); 
+
 	}
 	return 0;
 	//test
