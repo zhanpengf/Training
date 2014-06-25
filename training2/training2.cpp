@@ -13,6 +13,14 @@ void permutationAndShuffle()
 	int size = 3; 
 	std::vector<int> sortedArray = uber::initSortedArray(size);
 
+	//int a[] = {1, 1, 1, 2, 2, 2}; 
+	//int size = sizeof(a)/sizeof(int); 
+	//std::vector<int> sortedArray; 
+	//for (int i = 0; i < size; i++)
+	//{
+	//	sortedArray.push_back(a[i]); 
+	//}
+
 	std::vector<std::vector<int>> output2;
 	time (&start);
 	uber::permute2(sortedArray, 0, output2);
@@ -114,6 +122,62 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	{
+		//std::vector<int> sortedArray = uber::initSortedArray(10); 
+		int a[] = {1, 3, 5, 7, 9, 20, 23, 27}; 
+		int size = sizeof(a)/sizeof(int); 
+		std::vector<int> sortedArray; 
+		for (int i = 0; i < size; i++)
+		{
+			sortedArray.push_back(a[i]); 
+		}
+		TreeNode* BST = uber::cretateBSTFromSortedArray(sortedArray); 
+		int result = uber::findLargestSmallerThanXinBST(BST, -10);
+		int result1 = uber::find(BST, -10); 
+		int max = INT_MAX; 
+		int result2 = uber::findClosestToXinBST(BST, -10, max); 
+		
+	}
+	{
+		std::vector<int> sortedArray = uber::initSortedArray(10);
+		TreeNode* BST = uber::cretateBSTFromSortedArray(sortedArray);
+		TreeNode* node1 = BST->left->left; 
+		TreeNode* node2 = BST->left->right; 
+		TreeNode* ancestor = uber::findLowestAncestor(node1, node2, BST); 
+	}
+	{
+		int a[] = {1, 2, 3, 4, 1, 3, 2, 1}; 
+		int size = sizeof(a)/sizeof(int); 
+		std::vector<int> bars; 
+		for (int i = 0; i < size; i++)
+		{
+			bars.push_back(a[i]); 
+		}
+		int result = uber::largestRectangleArea(bars); 
+	}
+
+	{
+		vector<string> result; 
+		string s; 
+		uber::DFS(3, 0 , 0, s, result);  
+	}
+	{
+		int n[] = {1, 2, 1}; // number for each type of parentheses
+		int l[] = {0, 0, 0}; // number of left parentheses that have been generated
+		int r[] = {0, 0, 0}; // ..........right........
+		stack<char> s;
+		string sol;
+		uber::generateParentheses(n, l, r, s, sol);  
+		//return 0;
+
+	}
+	{
+		string s = "aabcd"; 
+		vector<string> result; 
+		uber::permuteString(s, 0, 5, result); 
+	}
+
+
+	{
 		static const int a1[] = {1, 2, 3, 3, 4, 5, 6, 7, 8, 9 };
 		vector<int> v1 (a1, a1 + sizeof(a1) / sizeof(a1[0]) );
 		static const int a2[] = {2, 3, 3, 3, 4, 5};
@@ -123,8 +187,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		vector<string> result; 
 		uber::permuteParenthesis(0, 0, 3, "", result); 
-		vector<string> result2; 
-		uber::permuteParenthesis2(0, 0, 3, "", result2); 
+		vector<string> result2;
 		 
 		vector<string> result3; 
 		char mychars[] = {'(',')'};
@@ -132,8 +195,35 @@ int _tmain(int argc, _TCHAR* argv[])
 		std::vector<int> currentCount(2,0); 
 		int myTotalCount[] = {3,3}; 
 		std::vector<int> totalCount(myTotalCount, myTotalCount + sizeof(myTotalCount) / sizeof(int)); 
-		uber::permuteStringWithDuplicates(chars, currentCount, totalCount, "", result3);  
+		uber::permuteStringWithDuplicates(chars, currentCount, totalCount, "", result3); 
+
+		vector<string> result4;
+		uber::permuteStringWithDuplicatesParen(chars, currentCount, totalCount, "", result4); 
 		//uber::DFS(3,0,0,"",result); 
+	}
+
+	{
+		vector<string> result3; 
+		char mychars[] = {'(','[','{',')',']', '}'};
+		std::vector<char> chars (mychars, mychars + sizeof(mychars) / sizeof(char) );
+		std::vector<int> currentCount(6,0); 
+		int myTotalCount[] = {1,1,2,1,1,2}; 
+		std::vector<int> totalCount(myTotalCount, myTotalCount + sizeof(myTotalCount) / sizeof(int)); 
+		
+		vector<string> result4;
+		stack<char> S; 
+		uber::permuteStringWithDuplicatesParenMulti(chars, currentCount, totalCount, "", S, result4);
+	}
+	{
+		int myJobs[] = { 1, 2, 3, 4, 5};
+		std::vector<int> jobs(myJobs, myJobs + sizeof(myJobs) / sizeof(int)); 
+		std::vector<vector<int>> servers(3,vector<int>(0,0));
+		vector<vector<vector<int>>> result; 
+		uber::findAssignment(jobs, servers, 0, result); 
+		int k347 = uber::findKthSmallest347(3); 
+		k347 = uber::findKthSmallest347(4); 
+		k347 = uber::findKthSmallest347(5); 
+
 	}
 	return 0;
 	//test

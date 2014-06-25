@@ -4,9 +4,15 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdio.h>
+#include <math.h>
+#include <algorithm>
 #include <string>
+#include <queue>          
+#include <unordered_set>
 
-using namespace std; 
+#include <iostream>
+#include <unordered_set>
+using namespace std;
 
 struct TreeNode
 {
@@ -127,6 +133,105 @@ public:
 		return (isBSTHelper(root->left, min, val) && isBSTHelper(root->right, val, max));  
 	}
 
+	static TreeNode * findLowestAncestor(TreeNode *node1, TreeNode *node2, TreeNode *root)
+	{
+		if (root == NULL)
+		{
+			return NULL; 
+		}
+		if ((root == node1)||(root == node2))
+		{
+			return root; 
+		}
+		TreeNode *Left = findLowestAncestor(node1, node2, root->left); 
+		TreeNode *Right = findLowestAncestor(node1, node2, root->right); 
+		if ((Left != NULL)&&(Right != NULL))
+		{
+			return root; 
+		}
+		else
+		{
+			return Left?Left:Right; 
+		}
+	}
+
+	//static TreeNode * findLowestAncestor2(TreeNode *node1, TreeNode *node2, TreeNode *root)
+	//{
+	//	std::vector<TreeNode*> node1path; 
+	//	std::vector<TreeNode*> node2path; 
+
+	//	TreeNode* currentNode = node1; 
+	//	while (currentNode->
+	//}
+
+
+	// Find the largest number in a BST that is smaller than x 
+	// recursively search in the BST's left subtree and right subtree.
+	// 
+	// If x > root, the solution is larger of the root and solution of the right tree, 
+	// otherwise, the solution is in the left tree
+	static int findLargestSmallerThanXinBST(TreeNode* root, int x)
+	{
+		int currentSolution = INT_MIN; 
+		if (root == NULL)
+		{
+			return INT_MIN; 
+		}
+		if (x<=root->val)
+		{
+			currentSolution = findLargestSmallerThanXinBST(root->left, x); 
+		}
+		else
+		{
+			currentSolution = std::max(findLargestSmallerThanXinBST(root->right, x), root->val); 
+		}
+		return currentSolution;
+	}
+
+	static int find(TreeNode* root, int x) {
+		TreeNode* curr = root;
+		int result = x;
+		while (curr) {
+			if (curr->val >= x) {
+				curr = curr->left;
+			} else {
+				result = curr->val;
+				curr = curr->right;
+			}
+		}
+		return result;
+	}
+	// find the number that is closest to x in a BST
+	static int findClosestToXinBST(TreeNode *root, int x, int &smallestDiff)
+	{	
+		if (root == NULL)
+		{
+			return INT_MIN; 
+		}
+		if (root->val == x)
+		{
+			smallestDiff = 0; 
+			return x; 
+		}
+		int currentSolution; 
+		if (root->val > x)
+		{
+			currentSolution = findClosestToXinBST(root->left, x, smallestDiff); 
+		}
+		else
+		{
+			currentSolution = findClosestToXinBST(root->right, x, smallestDiff); 
+		}
+
+		int rootDiff = std::abs(x-root->val); 
+		if (rootDiff < smallestDiff)
+		{
+			currentSolution = root->val;
+			smallestDiff = rootDiff; 
+		}
+		return currentSolution; 
+
+	}
 
 
 	static void permute(std::vector<int> &input, int head, std::vector<std::vector<int>> &output)
@@ -306,6 +411,133 @@ public:
 		return result; 
 	}
 
+	static int largestRectangleArea(vector<int> &height) {
+		stack<int> S;
+		height.push_back(0);
+		int result = 0;
+		for (int i = 0; i < height.size(); ) {
+			if (S.empty() || height[i] > height[S.top()]) {
+				S.push(i);
+				i++;
+			} else {
+				int tmp = S.top();
+				S.pop();
+				int width = S.empty() ? i : i - S.top() - 1;
+				int area = height[tmp] * width;
+				result = max(result, area);
+			}
+		}
+		return result;
+	}
+
+
+	/// doesn't work, because my stack stores the height value not the height index. Index is needed to compute the width. 
+	/// My way of computing width is wrong, it only works for monotonically ascending array. 
+	static int largestRectangleAreaFeng(vector<int> &height) {
+		stack<int> S;
+		height.push_back(0);
+		int result = 0;
+		for (int i = 0; i < height.size(); i++) {
+			if (S.empty() || height[i] >= S.top()) {
+				S.push(height[i]);
+			} else {
+				int width = 1; 
+				while ( !S.empty() && (S.top() > height[i]))
+				{
+					int height = S.top();
+					int area = width * height; 
+					width ++; 
+					S.pop();
+					result = result > area ? result:area; 
+				}
+
+			}
+		}
+		return result;
+	}
+
+	// parentheses
+	static void DFS(int n, int l, int r, string s, vector<string> &result) {
+		if (r == n) {
+			result.push_back(s);
+			return;
+		}
+		if (l < n) {
+			DFS(n, l+1, r, s+"(", result);
+		}
+		if (r < l) {
+			DFS(n, l, r+1, s+")", result);
+		}
+	}
+
+	static vector<string> generateParenthesis(int n) {
+		vector<string> result;
+		DFS(n, 0, 0, "", result);
+		return result;
+	}
+
+
+
+	static void generateParentheses(int n[], int l[], int r[], stack<char> s, string sol) {
+		static const char leftP[] = "([{";
+		static const char rightP[] = ")]}";
+		bool ok = true;
+		for (int i = 0; i < 3; i++) {
+			if (r[i] < n[i]) {
+				ok = false;
+				break;
+			}
+		}
+		if (ok) {
+			cout << sol << endl;
+			return; 
+		}
+    
+		for (int i = 0; i < 3; i++) {
+			if (l[i] < n[i]) {
+				s.push(leftP[i]);
+				l[i]++;
+				generateParentheses(n, l, r, s, sol+leftP[i]);
+				s.pop();
+				l[i]--;
+			}
+		}
+		for (int i = 0; i < 3; i++) {
+			if (r[i] < l[i]) {
+				if (s.top() == leftP[i]) {
+					s.pop();
+					r[i]++;
+					generateParentheses(n, l, r, s, sol+rightP[i]);
+					s.push(leftP[i]);
+					r[i]--;
+				}
+			}
+		}
+	}
+
+	static void permuteString(string &s, int start, int length, vector<string> &result)
+	{
+	  if (start == length - 1)
+	  {
+		result.push_back(s); 
+		return;   
+	  }
+	  for (int i = start; i < length; i++)
+	  {
+		swap(s, start, i); 
+		permuteString(s, start+1, length, result); 
+		swap(s, i, start); 
+	  }
+	}
+
+	static void swap(string &s, int index1, int index2)
+	{
+	  char temp = s[index1]; 
+	  s[index1] = s[index2];
+	  s[index2] = temp; 
+	}
+
+
 	static vector<int> findDuplicates(vector<int> &a1, vector<int> &a2)
 	{
 		vector<int> result; 
@@ -363,24 +595,7 @@ public:
 		}
 	}
 
-	// intened to generated all permutations without vaild parenthesis constraint. doesn't work. 
-	static void permuteParenthesis2(int r, int l, int n, string currentStr, vector<string> &result)
-	{
-		if ((r==n) && (l==n))
-		{
-			result.push_back(currentStr); 
-			return; 
-		}
 
-		if (l<n)
-		{
-			permuteParenthesis(r, l+1, n, currentStr +"(", result);
-		}
-		if (r<n)
-		{
-			permuteParenthesis(r+1, l, n, currentStr +")", result);
-		}
-	}
 
 	// works. 
 	static void permuteStringWithDuplicates(vector<char> &chars, vector<int> &currentCount,  vector<int> totalCount, string currentStr, vector<string> &result)
@@ -412,6 +627,168 @@ public:
 			}
 		}		
 	}
+
+	static void permuteStringWithDuplicatesParen(vector<char> &chars, vector<int> &currentCount,  vector<int> totalCount, string currentStr, vector<string> &result)
+	{
+		int size = chars.size(); 
+		bool done = true; 
+		for (int i = 0; i < size; i++)
+		{
+			if (currentCount[i] != totalCount[i] )
+			{
+				done = false; 
+				break;
+			}
+		}
+
+		if (done)
+		{
+			result.push_back(currentStr); 
+			return; 
+		}
+
+		
+		for (int i = 0; i < 1; i++)
+		{			
+			if (currentCount[i] < totalCount[i])
+			{
+				currentCount[i]++;
+				permuteStringWithDuplicatesParen(chars, currentCount, totalCount, currentStr + chars[i], result); 
+				currentCount[i]--; // this line is the key
+			}
+		}
+		
+		for (int i = 1; i < 2; i++)
+		{			
+			if (currentCount[i] < currentCount[i-1])
+			{
+				currentCount[i]++;
+				permuteStringWithDuplicatesParen(chars, currentCount, totalCount, currentStr + chars[i], result); 
+				currentCount[i]--; // this line is the key
+			}
+		}	
+	}
+
+	static void permuteStringWithDuplicatesParenMulti(vector<char> &chars, vector<int> &currentCount,  vector<int> totalCount, string currentStr, stack<char> S, vector<string> &result)
+	{
+		int size = chars.size(); 
+		bool done = true; 
+		for (int i = 0; i < size; i++)
+		{
+			if (currentCount[i] != totalCount[i] )
+			{
+				done = false; 
+				break;
+			}
+		}
+
+		if (done)
+		{
+			result.push_back(currentStr); 
+			return; 
+		}
+
+		;  
+		int halfSize = size / 2; 
+		for (int i = 0; i < halfSize; i++)
+		{			
+			if (currentCount[i] < totalCount[i])
+			{
+				currentCount[i]++;
+				S.push(chars[i]); 
+				permuteStringWithDuplicatesParenMulti(chars, currentCount, totalCount, currentStr + chars[i], S, result); 
+				S.pop(); 
+				currentCount[i]--; // this line is the key
+			}
+		}
+		
+		for (int i = halfSize; i < size; i++)
+		{			
+			if (currentCount[i] < currentCount[i-halfSize])
+			{
+				if (S.empty()||(S.top() == chars[i-halfSize]))
+				{
+					currentCount[i]++;
+					char a = S.top(); 
+					S.pop(); 
+					permuteStringWithDuplicatesParenMulti(chars, currentCount, totalCount, currentStr + chars[i], S, result); 
+					S.push(a); 
+					currentCount[i]--; // this line is the key
+				}
+			}
+		}	
+	}
+
+	static void findAssignment(vector<int> &jobs, vector<vector<int>> &servers, int index, vector<vector<vector<int>>> &result) 
+	{
+		if (index == jobs.size())
+		{
+			result.push_back(servers); 
+			return; 
+		}
+		for (int i = 0; i < servers.size(); i++)
+		{
+			servers[i].push_back(jobs[index]);
+			findAssignment(jobs, servers, index + 1, result); 
+			servers[i].pop_back(); 
+		}
+
+	}
+
+	static struct node347
+	{
+		int x; 
+		int y; 
+		int z; 
+		int val; 
+		node347(int x_, int y_, int z_)
+		{
+			x = x_; 
+			y = y_; 
+			z = z_; 
+			val = (int)(pow(3.0,x)*pow(4.0,y)*pow(7.0,z)); 
+		} 
+	};
+
+friend bool operator < (node347 a, node347 b)
+	{
+		return a.val > b.val;
+	}
+
+	//find kth smallest 3^x*4^y*7^z
+	static int findKthSmallest347(int k)
+	{
+		unordered_set<int> visited; 
+		priority_queue<node347> heap; 
+		int popCount = 0; 
+		int result = 0; 
+		heap.push(node347(1, 1, 1));
+		node347 popped(0, 0, 0); 
+		while (!heap.empty() && popCount<k)
+		{
+			popped = heap.top(); 
+			visited.insert(popped.val); 
+			heap.pop(); 
+			node347 xNext(popped.x + 1, popped.y, popped.z); 
+			node347 yNext(popped.x, popped.y + 1, popped.z); 
+			node347 zNext(popped.x, popped.y, popped.z + 1); 
+			if (visited.find(xNext.val) == visited.end())
+			{
+				heap.push(xNext);
+			}
+			if (visited.find(yNext.val) == visited.end())
+			{
+				heap.push(yNext); 
+			}
+			if (visited.find(zNext.val) == visited.end())
+			{
+				heap.push(zNext); 
+			}
+			popCount++; 
+		}
+		return popped.val; 
+	}
+
 
 
 //
@@ -669,3 +1046,35 @@ public:
 
 
 }; 
+
+class LongestString
+{
+public: 
+	// Sort words by length in descending order
+//bool &comp(const string &a, const string &b) {
+//    return a.size() > b.size();
+//}
+
+// Time Complexity: O(nm^2 + nlogn), where n is number of words and
+// m is average length of words
+// Space Complexity: O(n)
+//string longestWord(vector<string> &dict) {
+//    unordered_set<string> set;
+//    sort(dict.begin(), dict.end(), comp);
+//    for (int i = 0; i < dict.size(); i++) {
+//        set.insert(dict[i]);
+//    }
+//    //for (int i = 0; i < dict.size(); i++) {
+//    //    for (int k = 1; k < dict[i].size(); k++) {
+//    //        string substr1 = dict[i].substr(0, k);
+//    //        string substr2 = dict[i].substr(k);
+//    //        if (set.find(substr1) != set.end() && 
+//    //            set.find(substr2) != set.end()) {
+//    //            return dict[i];
+//    //        }
+//    //    }
+//    //    break;
+//    //}
+//    return "";
+//}
+};
