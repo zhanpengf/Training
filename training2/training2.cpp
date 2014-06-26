@@ -220,10 +220,25 @@ int _tmain(int argc, _TCHAR* argv[])
 		std::vector<vector<int>> servers(2,vector<int>(0,0));
 		vector<vector<vector<int>>> result; 
 		uber::findAssignment(jobs, servers, 0, result); 
-		int k347 = uber::findKthSmallest347(3); 
-		k347 = uber::findKthSmallest347(4); 
-		k347 = uber::findKthSmallest347(5); 
+		int k347 = uber::findKthSmallest347(3); // should be 336
+		k347 = uber::findKthSmallest347(4); //588
+		k347 = uber::findKthSmallest347(5); //756
 
+	}
+
+	{
+		int a[] = { 1, 1, 1, 0, 1, 1, 1, 1}; 
+		int longestOnes = uber::findLongestOnes(a, 8);
+		int a1 = 0; 
+	}
+
+	{
+		int a[] = { 1, 1, 0, 1, 1, 1, 1, 1, 1, 1};
+		//int a[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; 
+		//int a[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; 
+
+		int flippedLongestOnes = uber::findLongestOnesWithFlip(a, 10);
+		int a1 = 0; 
 	}
 	return 0;
 	//test

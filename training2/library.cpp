@@ -688,7 +688,6 @@ public:
 			return; 
 		}
 
-		;  
 		int halfSize = size / 2; 
 		for (int i = 0; i < halfSize; i++)
 		{			
@@ -732,7 +731,6 @@ public:
 			findAssignment(jobs, servers, index + 1, result); 
 			servers[i].pop_back(); 
 		}
-
 	}
 
 	static struct node347
@@ -750,7 +748,7 @@ public:
 		} 
 	};
 
-friend bool operator < (node347 a, node347 b)
+	friend bool operator < (node347 a, node347 b)
 	{
 		return a.val > b.val;
 	}
@@ -758,7 +756,8 @@ friend bool operator < (node347 a, node347 b)
 	//find kth smallest 3^x*4^y*7^z
 	static int findKthSmallest347(int k)
 	{
-		unordered_set<int> visited; 
+		//unordered_set<int> visited; 
+		unordered_set<node347 *> visited;
 		priority_queue<node347> heap; 
 		int popCount = 0; 
 		int result = 0; 
@@ -767,26 +766,106 @@ friend bool operator < (node347 a, node347 b)
 		while (!heap.empty() && popCount<k)
 		{
 			popped = heap.top(); 
-			visited.insert(popped.val); 
+			//visited.insert(popped.val); 
+			visited.insert(&popped); 
 			heap.pop(); 
 			node347 xNext(popped.x + 1, popped.y, popped.z); 
 			node347 yNext(popped.x, popped.y + 1, popped.z); 
 			node347 zNext(popped.x, popped.y, popped.z + 1); 
-			if (visited.find(xNext.val) == visited.end())
+			//if (visited.find(xNext.val) == visited.end())
+			if (visited.find(&xNext) == visited.end())
 			{
 				heap.push(xNext);
 			}
-			if (visited.find(yNext.val) == visited.end())
+			//if (visited.find(yNext.val) == visited.end())
+			if (visited.find(&yNext) == visited.end())
 			{
 				heap.push(yNext); 
 			}
-			if (visited.find(zNext.val) == visited.end())
+			//if (visited.find(zNext.val) == visited.end())
+			if (visited.find(&zNext) == visited.end())
 			{
 				heap.push(zNext); 
 			}
 			popCount++; 
 		}
 		return popped.val; 
+	}
+
+	static int findLongestOnes(int a[], int size)
+	{
+		int *longest = new int[size]; 
+		// base case
+		longest[0] = (a[0] ==1? 1:0); 
+		// scan the array, put the length of longest sequence of 1's that ends in the current location
+		int maxCount = longest[0]; 
+		for (int i = 1; i < size; i++)
+		{
+			if (a[i] == 1)
+			{
+				longest[i] = longest[i-1] + 1;
+			}
+			else
+			{
+				longest[i] = 0; 
+			}
+			if (longest[i] > maxCount)
+			{
+				maxCount = longest[i]; 
+			}
+		}
+		delete[] longest; 
+		return maxCount;		
+	}
+
+	static int findLongestOnesWithFlip(int a[], int size)
+	{
+		int *longest = new int[size]; 
+		// base case
+		longest[0] = (a[0] ==1? 1:0); 
+		// scan the array, put the length of longest sequence of 1's that ends in the current location
+		int maxCount = longest[0]; 
+		for (int i = 1; i < size; i++)
+		{
+			if (a[i] == 1)
+			{
+				longest[i] = longest[i-1] + 1;
+			}
+			else
+			{
+				longest[i] = 0; 
+			}
+			if (longest[i] > maxCount)
+			{
+				maxCount = longest[i]; 
+			}
+		}
+		// create a flippedLongest array, that stores the longest after flipping. 
+		int *flippedLongest = new int[size]; 
+		flippedLongest[0] = 1; 
+		maxCount = flippedLongest[0]; 
+
+		// second scan on the longest array, if we get a zero at i, assign longest[i-1] + 1 to this location
+		for (int i = 1; i < size; i ++)
+		{
+			if (longest[i] == 0)
+			{
+				flippedLongest[i] = longest[i-1] + 1; 
+			}
+			else
+			{
+				flippedLongest[i] = flippedLongest[i-1] + 1; 
+			}
+			if (flippedLongest[i] > maxCount)
+			{
+				maxCount = flippedLongest[i]; 
+			}
+		}
+
+
+		delete[] longest; 
+		delete[] flippedLongest; 
+		return maxCount;		
 	}
 
 
