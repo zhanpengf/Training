@@ -1000,6 +1000,28 @@ public:
 		}
 	}
 
+	
+	Node *ReverseLinkedList1(Node *head)
+	{
+		if (head == NULL)
+		{
+			return NULL; 
+		}
+		Node *cur = head; 
+		Node *next = head->next; 
+		
+		head->next = NULL; 
+		while (next != NULL)
+		{
+			Node *temp = next->next; 
+			next->next = cur;
+			cur = next; 
+			next = temp;
+		}
+		return cur; 
+	}
+
+
 	Node *ReverseLinkedList2(Node* head)
 	{
 		Node* prev = NULL; 
@@ -1015,6 +1037,22 @@ public:
 		return prev; 
 	}
 
+	Node *ReverseLinkedListRecursive(Node *head)
+	{
+		if (head == NULL)
+		{
+			return NULL;
+		}
+		if (head->next == NULL)
+		{
+			return head; 
+		}
+		Node *result = ReverseLinkedListRecursive(head->next);
+		head->next->next= head; 
+		head->next = NULL;
+		return result; 
+	}
+
 	void testReverseLinkedList()
 	{
 		llHead = NULL; 
@@ -1027,8 +1065,9 @@ public:
 			printf(" %d", currentNode->val); 
 			currentNode = currentNode->next;
 		}
-		//llHead = ReverseLinkedList(llHead);
-		llHead = ReverseLinkedList2(llHead);
+		llHead = ReverseLinkedList1(llHead);
+		//llHead = ReverseLinkedList2(llHead);
+		//llHead = ReverseLinkedListRecursive(llHead); 
 
 		printf("\nafter reverse:\n");
 		currentNode = llHead; 

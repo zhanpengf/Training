@@ -215,9 +215,9 @@ int _tmain(int argc, _TCHAR* argv[])
 		uber::permuteStringWithDuplicatesParenMulti(chars, currentCount, totalCount, "", S, result4);
 	}
 	{
-		int myJobs[] = { 1, 2, 3, 4, 5};
+		int myJobs[] = { 1, 2};
 		std::vector<int> jobs(myJobs, myJobs + sizeof(myJobs) / sizeof(int)); 
-		std::vector<vector<int>> servers(3,vector<int>(0,0));
+		std::vector<vector<int>> servers(2,vector<int>(0,0));
 		vector<vector<vector<int>>> result; 
 		uber::findAssignment(jobs, servers, 0, result); 
 		int k347 = uber::findKthSmallest347(3); 
