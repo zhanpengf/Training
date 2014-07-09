@@ -6,6 +6,7 @@
 #include <time.h>
 using namespace std; 
 
+
 void permutationAndShuffle()
 // permutation 
 {
@@ -107,6 +108,11 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		std::string result = uber::removeDuplicate("abaaabbb"); 
 		std::string reverse = uber::reverseWords("   i         am happily a family man   "); 
+		std::string r2 = uber::reverseWords(" "); 
+		//string s = "+---...2x+--x--+x-+-x2...---+";//" "; //"+---...2x+--x--+x-+-x2...---+";
+		string s = "hello world!";
+		uber::reverseWords2(s); 
+		int a = 0; 
 	}
 
 	{
@@ -240,6 +246,70 @@ int _tmain(int argc, _TCHAR* argv[])
 		int flippedLongestOnes = uber::findLongestOnesWithFlip(a, 10);
 		int a1 = 0; 
 	}
+
+	{
+		string source = "abccccdef"; 
+		char mychars[] = {'a', 'b', 'c'};
+		std::vector<char> chars (mychars, mychars + sizeof(mychars) / sizeof(char) );
+		vector<string> result = uber::findSubStr(source, chars); 
+		int fib[10]; 
+		for (int i = 0; i<10; i++)
+		{
+			fib[i] = uber::fib(i); 
+		}
+	}
+	{
+		int arr[] = { 4, 3, 0, 1, 1, 2}; 
+		int result = uber::canJump(arr, 6);
+		bool canJump = uber::canJump1(arr, 6); 
+		int a = 0; 
+	}
+
+	{
+		int arr[] = { 4, 3, 0, 1, 5, 2}; 
+		uber::quickSort(arr,0,5); 
+		int a = 0; 
+	}
+
+	{
+		int myJobs[] = { 3, 2, 4};
+		std::vector<int> jobs(myJobs, myJobs + sizeof(myJobs) / sizeof (int)); 
+		vector<int> result = uber::twoSum(jobs, 6); 
+		int a = (-10)%12;
+		int b = (-10)/12;
+		a = 0; 
+	}
+
+	{
+		vector<vector<int> > matrix(2, vector<int>(2, 1));
+		vector<int> result = uber::spiralOrder(matrix); 
+	}
+	{
+		double result = uber::powr(8.88, 3); 
+		int a = 0; 
+	}
+
+	{
+		//string s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
+		string s = "aaab"; 
+		unordered_set<string> dict; 
+		dict.insert("a"); 
+		dict.insert("aa"); 
+		dict.insert("aaa"); 
+		dict.insert("b"); 
+		//vector<string> result = uber::wordBreak(s,dict);
+		vector <int> breakPoints;
+		vector <vector<string>> wordsAtPoints; // the possible words of this point
+		uber::findBreakPoints(s, dict, breakPoints, wordsAtPoints); 
+		vector<string> result = uber::wordBreak2(s, dict); 
+		int a = 0; 
+
+	}
+	{
+		vector<TreeNode *> result = uber::generateTrees(3); 
+		int a = 0; 
+	}
+
 	return 0;
 	//test
 }

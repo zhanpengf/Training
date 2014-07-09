@@ -9,6 +9,7 @@
 #include <string>
 #include <queue>          
 #include <unordered_set>
+#include <unordered_map>
 
 #include <iostream>
 #include <unordered_set>
@@ -19,6 +20,8 @@ struct TreeNode
 	int val;
 	TreeNode *left; 
 	TreeNode *right; 
+	TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+	TreeNode():left(NULL), right(NULL) {}
 }; 
 
 // linkedList node
@@ -868,6 +871,531 @@ public:
 		return maxCount;		
 	}
 
+	static int setBit(int input, int bit)
+	{
+		int mask = 1; 
+		mask <<= bit; 
+		return input |= mask; 
+	}
+
+	// assumption all characters are lower case
+
+	static vector<string> findSubStr(string source, vector<char> chars)
+	{
+		vector<string> result; 
+		// first convert chars into an integer, where bit 0-25 correspond to a-z, o(n)
+		int charsBits = 0; 
+		for (int i = 0; i < chars.size(); i++)
+		{
+			int bit = chars[i] - 'a';
+			charsBits = setBit(charsBits, bit); 
+		}
+		// then find all the substrings of the source, o(s^2), convert substring to integer, o(1), overall o(s^2)
+		for (int i = 0; i < source.length(); i++)
+		{
+			int bit = source[i] - 'a';
+			int currSubStrBits = setBit(0, bit); 
+			for (int j = i; j < source.length(); j++)
+			{
+				//update currSubStrBits with the incoming character
+				bit = source[j] - 'a'; 
+				currSubStrBits = setBit(currSubStrBits, bit); 
+				// then compare the currSubStrBits with charsBits, if they equal, then its not valid, we can skip the rest of j
+				if (currSubStrBits == charsBits)
+				{
+					break; 
+				}
+				else
+				{
+					result.push_back(source.substr(i, j - i + 1)); 
+				}
+			}
+		}
+		return result; 
+		
+	}
+
+	static int fib(int n)
+	{
+		if ((n == 0) || (n ==1 ))
+		{
+			return n; 
+		}
+		int f0 = 0; 
+		int f1 = 1; 
+		int f2 = 1; 
+		for (int i = 2; i <= n; i++)
+		{
+			f2 = f0 + f1; 
+			f0 = f1; 
+			f1 = f2; 
+		}
+		return f2; 
+
+	}
+
+	static int canJump (int A[], const int n) {
+		vector<int> canGetToEnd(n, -1);
+		//std::fill(canGetToEnd, canGetToEnd + n, -1); //initilize each item in the array to -1
+		canGetToEnd[n - 1] = 0;// last step doesn't need to move
+		for (int i = n - 2; i >= 0; i--) {
+			int min_step = INT_MAX;
+			for (int j = 1; j <= A[i]; j++) { //steps A[i] can move
+				if (i + j >= n - 1) {// can move to the end directly
+					min_step = 1; //jump once
+					break;
+				}
+				if (canGetToEnd[i + j] != -1) { // reach some state can reach the end
+					min_step = min(min_step, canGetToEnd[i + j] + 1);  
+				}
+			}
+			canGetToEnd[i] = min_step;
+		}
+		return canGetToEnd[0];
+	}
+
+	static bool canJump1(int A[], const int n )
+	{
+		int minJump = 1; 
+		for (int i = n - 1; i >= 0; i--)
+		{
+			if (A[i] < minJump)
+			{
+				minJump++;
+			}
+			else
+			{
+				minJump = 1; 
+			}
+		}
+		return !(minJump > 1); 
+	}
+
+
+	static void swap(int &a, int&b)
+	{
+		int temp = a; 
+		a = b; 
+		b = temp; 
+	}
+
+	static int partition(int a[], int left, int right) {
+		if (left == right) return left;
+		//use the first item as pivot
+		swap(a[left], a[right]);
+		int i = left;
+		int j = right - 1;
+		while (i <= j) {
+			if(a[i] <= a[right]) {
+				i++;
+			} else {
+				swap(a[j--], a[i]);
+			}
+		}
+		swap(a[i], a[right]);
+		return i;
+	}
+
+	static int partition1(int a[], int left, int right) {
+		if (left == right) return left;
+		//use the first item as pivot
+		//swap(a[left], a[right]);
+		int i = left + 1;
+		int j = right;
+		while (i <= j) {
+			if(a[i] <= a[left]) {
+				i++;
+			} else {
+				swap(a[j--], a[i]);
+			}
+		}
+		swap(a[left], a[j]);
+		return j;
+	}
+
+	static void quickSort(int a[], int left, int right) {
+		if (left >= right) return;
+		int index_pivot = partition1(a, left, right);
+		quickSort(a, left, index_pivot - 1);
+		quickSort(a, index_pivot + 1, right);
+	}
+
+	static void reverseWords2(string &s) {
+      if (s.size()==0)
+        {
+            return;
+        }
+        // first reverse the entire string
+       reverseString(s, 0, s.size() - 1); 
+       // then reverse each word
+       int writeStart = 0; 
+	   int writeEnd = 0; 
+	   int readStart = 0; 
+       int readEnd = 0; 
+
+	   int size = s.size(); 
+	  
+       while (readStart < size)
+       {
+		   // first put the start at the right place, skippin all leading ' 's. 
+		   while ((readStart < size) && (s[readStart] == ' '))
+		   {
+			   readStart ++;
+			   readEnd = readStart;
+		   }
+		   
+		   // if this read is all space, break out of the loop, the previous wirteStart is the length of final string
+		   if (readStart == size)
+		   {
+			   break;
+		   }
+		   
+		   // read till we meet a space, readEnd is the last non space letter of this word 
+           while (readEnd + 1 < s.size() && s[readEnd + 1]!=' ')
+           {
+               readEnd++; 
+           }
+		   int readLength = readEnd - readStart + 1;
+		   // if it is not the first word, put a space in front
+		   if (writeStart!=0)
+		   {
+			   s[writeStart] = ' '; 
+			   writeStart++; 
+		   }
+		   
+		   // copy the word from readStart to writeStart
+		   memcpy(&s[writeStart], &s[readStart], readLength); 
+		   writeEnd =  writeStart + readLength - 1;
+		   
+		   // reverse the word
+           reverseString(s,writeStart, writeEnd);
+           
+           // move writeStart and readStart to one behind the end of word. 
+		   writeStart = writeEnd + 1; 
+		   readStart = readEnd + 1; 
+       }
+	   s = s.substr(0,writeStart);
+       
+       
+    }
+    
+    static void reverseString(string &s, int start, int end)
+    {
+        int i = 0;
+        int length = end - start + 1; 
+        while (i < length/2)
+        {
+            char temp = s[start + i];
+            s[start + i] = s[start + length - i - 1];
+            s[start + length - i - 1 ] = temp;
+            i++; 
+        }
+    
+    }
+
+	static vector<int> twoSum(vector<int> &numbers, int target) 
+    {
+        vector<int> result; 
+        // hash all numbers, o(n)
+        std::unordered_map<int,int> hashmap;
+        int size = numbers.size();
+        for (int i = 0; i < size; i++)
+        {
+            hashmap[numbers[i]] = i;
+        }
+        for (int i = 0; i < size; i++)
+        {
+            int rem = target - numbers[i]; 
+            if (hashmap.find(rem)!=hashmap.end())
+            {
+				if (i!=hashmap[rem])
+				{
+					result.push_back(i+1);
+					result.push_back(hashmap[rem]+1); 
+					break;
+				}
+            }
+        }
+        return result; 
+        
+    }
+
+	static vector<int> spiralOrder(vector<vector<int> > &matrix) 
+    {
+        
+        vector<int> result; 
+        int rows = matrix.size(); 
+        if (rows == 0)
+        {
+            return result;
+        }
+        int cols = matrix[0].size(); 
+        if (cols == 0)
+        {
+            return result;
+        }
+        spiralHelper(result, matrix, 0, 0,  rows - 1, cols - 1 ); 
+        return result; 
+    }
+
+	        // recusion helper function
+    static void spiralHelper(vector<int> &result, vector<vector<int> > matrix, int top, int left, int bottom, int right)
+    {
+        // handle current boundry
+        for (int i = left; i <= right; i++)
+        {
+            result.push_back(matrix[top][i]);
+        }
+        for (int i = top + 1; i <= bottom; i++)
+        {
+            result.push_back(matrix[i][right]);
+        }
+        if (bottom > top)
+        {
+            for (int i = right - 1; i >= left; i--)
+            {
+                result.push_back(matrix[bottom][i]);
+            }
+        }
+        if (left < right)
+        {
+            for (int i = bottom - 1; i > top; i--)
+            {
+                result.push_back(matrix[i][left]); 
+            }
+        }
+        
+        if ((bottom - top < 2) || (right - left < 2))
+        {
+            return; 
+        }
+        else
+        {
+            // recurse to the next level
+            spiralHelper(result, matrix, top + 1, left + 1, bottom - 1, right - 1); 
+        
+        }
+    }
+
+	static double powr(double x, int n) {
+        
+        if (n == 0)
+        {
+            return 1; 
+        }
+        int sign = n; 
+        n = abs(n);
+		int rem = n % 2;
+        n /= 2;        
+        double temp = powr(x,n);
+        double result = 0; 
+        if (rem == 0)
+        {
+            result = temp * temp; 
+        }
+        else if (rem == 1)
+        {
+            result = temp * temp * x; 
+        }
+        if (sign > 0)
+        {
+            return result;
+        }
+        else
+        {
+            return 1/result; 
+        }
+        
+    }
+
+	// this may work, but n^n complexity. 
+	static vector<string> wordBreak(string s, unordered_set<string> &dict) {
+        vector<string> result;  
+        // recursion
+        int size = s.size(); 
+        if (size == 0)
+        {
+            return result; 
+        }
+        
+        if (dict.find(s) != dict.end())
+        {
+            result.push_back(s);
+            return result; 
+        }
+        //bool find = false; 
+        for (int i = 1; i <= size; i++)
+        {
+            string firstWord = s.substr(0,i); 
+            string sol = ""; 
+            if (dict.find(firstWord)!=dict.end())
+            {
+                sol += (firstWord + " "); 
+                vector<string> tempResults = wordBreak(s.substr(i, size - i), dict); 
+                for (int t = 0; t < tempResults.size(); t++)
+                {
+                    result.push_back(sol + tempResults[t]); 
+                }
+                //find = true; 
+            }
+        }
+        //if (!find)
+        {
+            return result; 
+        }
+    }
+
+	static void findBreakPoints(string s, unordered_set<string> &dict, vector <int> &breakPoints, vector <vector<string>> &wordsAtPoints)
+    {
+        int size = s.size(); 
+        // find the first point
+        bool find = false; 
+        for (int i = 1; i < size; i++)
+        {
+            if (dict.find(s.substr(0, i))!= dict.end())
+            {
+                breakPoints.push_back(i);
+                vector<string> words; 
+                words.push_back(s.substr(0, i)); 
+                wordsAtPoints.push_back(words);
+                find = true;
+				break;
+            }
+        }
+        if (!find)
+        {
+            return; 
+        }
+        // after the first point, extend based dp rule
+        // for every i, 
+        // 1. check if substr(0, i ) is valid, if yes, add to breakPoints, add to words
+        // 2. check all the previous break points, if substr(breakPoint[j], i) is valid, add to breakPoints if 1 is false, add to words
+        // 3. else this is not a vaild breakpoint
+        for (int i = breakPoints[0]; i < size; i++)
+        {
+            find = false;
+            vector<string> words; 
+            if (dict.find(s.substr(0,i + 1))!=dict.end())
+            {
+                breakPoints.push_back(i+1);
+                words.push_back(s.substr(0, i + 1)); 
+                find = true;
+            }
+            for (int j = breakPoints.size() - 1; j >= 0 ; j-- )
+            {
+                string temp = s.substr(breakPoints[j], i - breakPoints[j] + 1); 
+                if (dict.find(temp) != dict.end())
+                {
+                    if (!find)
+                    {
+                        breakPoints.push_back(i + 1); 
+                        find = true; 
+                    }
+                    words.push_back(temp); 
+                }
+            }
+			if (find)
+			{
+				wordsAtPoints.push_back(words); 
+			}
+
+        }
+    }
+
+	static void printAll(vector <string> &result, vector<vector<string>> &wordsAtI, int i, string sol)
+    {
+        if (i == 0)
+        {
+			// remove the last " "
+			
+			result.push_back(sol.substr(0,sol.size()-1)); 
+            return; 
+        }
+        vector <string> words = wordsAtI[i]; 
+        int size = words.size(); 
+        for (int j = 0; j < size; j++)
+        {
+            int length = words[j].size(); 
+            printAll(result, wordsAtI, i-length, words[j] + " " + sol); 
+        }
+    }
+
+	static   vector<string> wordBreak2(string s, unordered_set<string> &dict) 
+    {
+        int size = s.size(); 
+        // first use dp to find all possible words ending at index i
+        vector <string> temp; 
+        vector <vector<string>> wordsAtI(size + 1, temp); 
+        wordsAtI[0].push_back("a"); 
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j <= i; j ++)
+            {
+                string tempS = s.substr(j, i - j + 1); 
+                if (dict.find(tempS) != dict.end())
+                {
+                    wordsAtI[i + 1].push_back(tempS); 
+                }
+            }
+        }
+        
+        vector<string> result; 
+		string sol = ""; 
+        printAll(result, wordsAtI, size, sol); 
+        return result; 
+    }
+
+
+	// recursion helper
+    static void genHelper(TreeNode *tree, TreeNode *cur, vector<TreeNode *> &result, unordered_set<int> &nums, int n)
+    {
+        if (nums.size() == 0)
+        {
+            result.push_back(tree);
+            return;
+        }
+        for (int i = 1; i <= n; i++)
+        {
+            if (nums.find(i) != nums.end())
+            {
+               nums.erase(i); 
+               TreeNode *newNode = new TreeNode(i); 
+               // resurse
+               if (cur->val > i)
+               {
+                   cur->left = newNode; 
+                   genHelper(tree, cur->left, result, nums, n); 
+               }
+               else
+               {
+                   cur->right = newNode;
+                   genHelper(tree, cur->right, result, nums, n); 
+               }
+               nums.insert(i);
+            }
+        }
+    }
+
+    static vector<TreeNode *> generateTrees(int n) {
+        unordered_set<int> nums; 
+        for (int i = 1; i<=n; i++)
+        {
+            nums.insert(i); 
+        }
+        vector<TreeNode *> result;
+        for (int i = 1; i <= n; i++)
+        {
+            nums.erase(i);
+            TreeNode *newNode = new TreeNode(i);
+			TreeNode *cur = newNode; 
+            genHelper(newNode, cur, result, nums, n); 
+            nums.insert(i);
+        }
+        return result; 
+        
+    }
+    
+    
 
 
 //
