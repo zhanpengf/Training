@@ -306,7 +306,47 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	}
 	{
+		//wrong
 		vector<TreeNode *> result = uber::generateTrees(3); 
+		int a = 0; 
+	}
+
+	{
+		uber::ListNode *head = new uber::ListNode(2);
+		uber::ListNode *cur = head;
+		int input[] = {2,1};
+
+		for (int i = 1; i < 2; i++)
+		{
+			uber::ListNode *node = new uber::ListNode(input[i]); 
+			cur->next = node; 
+			cur = node; 
+		}
+		
+		
+		uber::ListNode *result = uber::partition(head, 2); 
+		int a = 0; 
+	}
+	{
+		string result3 = uber::getPermutation4(4,24); 
+		for (int i = 1; i < 2; i++)
+		{
+			string result = uber::getPermutation(9, i); 
+			string result2 = uber::getPermutation3(9,i);
+			
+			if (result != result2)
+			{
+				int k = 1; // something is wrong
+			}
+		}
+		int a = 0; 
+	}
+	{
+		int count = 0; 
+		uber::walk(0,0,7,3,count);
+		count = uber::walkDP(7,3);
+		count = uber::walkDP2(7,3); 
+		count = uber::walkDP2(3,7);
 		int a = 0; 
 	}
 

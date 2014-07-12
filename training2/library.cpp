@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include <vector>
 #include <stack>
 #include <stdlib.h>
@@ -588,14 +588,15 @@ public:
 			result.push_back(currentStr); 
 			return; 
 		}
-		if (l<n)
-		{
-			permuteParenthesis(r, l+1, n, currentStr +"(", result); 
-		}
 		if (r<l)
 		{
 			permuteParenthesis(r+1, l, n, currentStr +")", result); 
 		}
+		if (l<n)
+		{
+			permuteParenthesis(r, l+1, n, currentStr +"(", result); 
+		}
+		
 	}
 
 
@@ -1394,8 +1395,288 @@ public:
         return result; 
         
     }
+
+	  struct ListNode {
+      int val;
+      ListNode *next;
+      ListNode(int x) : val(x), next(NULL) {}
+	 };
     
+    static   ListNode *partition(ListNode *head, int x) 
+    {
+       if (head == NULL)
+        {
+            return NULL; 
+        }
+        // use two pointer pointing to the current location of left portion and right portion
+        ListNode *left = NULL; 
+        ListNode *right = NULL;
+        // cur is the moving pointer
+        ListNode *cur = head;
+        
+        ListNode *leftHead = NULL; 
+        ListNode *rightHead = NULL; 
+        while (cur!= NULL)
+        {
+            if (cur->val < x)
+            {
+                // check if leftHead is found yet
+                if (leftHead == NULL)
+                {
+                    leftHead = cur;
+                    left = cur; 
+                }
+                else
+                {
+                    left->next = cur;
+                    left = cur;
+                }
+                
+            }
+            else
+            {
+                if (rightHead == NULL)
+                {
+                    rightHead = cur;
+                    right = cur;
+                }
+                else
+                {
+                    right->next = cur;
+                    right = cur;
+                }
+            }
+            cur = cur->next;
+        }
+        if (leftHead!=NULL)
+        {
+            left->next = rightHead;
+        }
+        else
+        {
+            leftHead = rightHead; 
+        }
+		if (right != NULL)
+		{
+			right->next = NULL; 
+		}
+        return leftHead; 
+        
+    }
+
+	static void shiftRight(string &input, int i, int j)
+	{
+		if (i != j)
+		{
+			//string a = input.substr(10, 0); 
+			// not checking (j + 1 < input.size()) also works because max of j + 1 is input.size(), in this case j+1 = "\0" the ending of a string
+			input = input.substr(0,i) + input[j] + input.substr(i,j-i) +input.substr(j + 1, input.size() - j - 1);  //((j + 1 < input.size())?input.substr(j + 1, input.size() - j - 1): "");
+		}
+	}
+
+	static void shiftLeft(string &input, int i, int j)
+	{
+		if (i != j)
+		{
+			input = input.substr(0,i) + input.substr(i + 1,j-i) + input[i] + ((j + 1 < input.size())?input.substr(j + 1, input.size() - j - 1): ""); 
+		}
+	}
+	/*static void shiftLeft(string &input, int i, int j)
+	{
+		if (i != j)
+		{
+			input = input
+		}
+	}*/
+	
+
+    static void permute(string &input, int start, int &cur, int k, string &result)
+    {
+        int size = input.size(); 
+        if (start == size)
+        {
+            cur++; 
+            if (cur == k)
+            {
+                result = input;  
+            }
+            return;
+        }
+        for (int i = start; i < size; i++)
+        {
+			//string temp = input; 
+            shiftRight(input, start, i); 
+            permute(input, start + 1, cur, k, result);
+            if (result!="")
+            {
+                return;
+            }
+			shiftLeft(input, start, i); 
+            //input = temp; 
+        }
+    }
     
+    static string getPermutation(int n, int k) {
+        string result = ""; 
+        string input = "123456789";
+        input = input.substr(0,n);
+        int cur = 0; 
+        permute(input, 0, cur, k, result); 
+        return result; 
+        
+    }
+	static vector<int> factorials(int n)
+	{
+		vector<int> result;
+		result.push_back(1);
+		for (int i = 1; i <= n; i++)
+		{
+			result[i] = result[i-1]*i;
+		}
+		return result;
+	}
+
+	// not work, incomplete
+	static string getPermutation2(int n, int k) {
+		string result = ""; 
+        vector<int> factos = factorials(n); 
+		if (k > factos[n])
+		{
+			return result; 
+		}
+		int digits[10];
+		for (int i = 0; i< 10; i++)
+		{
+			digits[i] = 0; 
+		}
+		int rem = k; 
+		for (int i = n ; i >= 1; i--)
+		{
+			digits[i] = rem / factos[i];
+			rem = rem % factos[i]; 
+			if (rem == 0)
+			{
+			}
+		}
+        
+    }
+
+	static string getPermutation3(int n, int k)
+	{
+           vector<int> nums(n);  
+           int permCount =1;  
+           for(int i =0; i< n; i++)  
+           {  
+                nums[i] = i+1;  
+                permCount *= (i+1);        
+           }  
+           // change K from (1,n) to (0, n-1) to accord to index  
+            k--;  
+            string targetNum;  
+            for(int i =0; i< n; i++)  
+            {    
+                 permCount = permCount/ (n-i);  
+                 int choosed = k / permCount;  
+                 targetNum.push_back(nums[choosed] + '0');  
+                 //restruct nums since one num has been picked  
+                 for(int j =choosed; j< n-i-1; j++)  
+                 {  
+                      nums[j]=nums[j+1];  
+                 }  
+                 k = k%permCount;  
+            }  
+            return targetNum; 
+	}
+	    
+	static int factorial(int n)
+     {
+         int res = 1;
+         for(int i = 2; i <= n; i++)
+             res *= i;
+         return res;
+     }
+
+	static string getPermutation4(int n, int k) {
+         int total = factorial(n);
+         string candidate = string("123456789").substr(0, n);
+         string res(n,' ');
+         for(int i = 0; i < n; i++)//依次计算排列的每个位
+         {
+             total /= (n-i);
+             int index = (k-1) / total;
+             res[i] = candidate[index];
+             candidate.erase(index, 1);
+             k -= index*total;
+         }
+         return res;
+     }
+
+	static void walk(int x, int y, int m, int n, int &count)
+	{
+		if ((x == m -1) && (y == n - 1))
+		{
+			count++; 
+			return; 
+		}
+		if (x <= m -2)
+		{
+			walk(x + 1, y, m, n, count);
+		}
+		if (y <= n - 2)
+		{
+			walk(x, y + 1, m, n, count); 
+		}
+
+	}
+
+	static int walkDP(int m, int n)
+	{
+		if ((m == 1) || (n == 1))
+		{
+			return 1; 
+		}
+		vector<vector<int>> dp(m, vector<int>(n,0)); 
+		for (int i = 0; i < m ; i++)
+		{
+			dp[i][0] = 1; 
+		}
+		for (int i = 0; i < n; i++)
+		{
+			dp[0][i] = 1; 
+		}
+		dp[0][0] = 0; 
+		for (int i = 1; i < m; i++)
+			for (int j = 1; j < n; j++)
+			{
+				dp[i][j]= dp[i-1][j] + dp[i][j-1]; 
+			}
+		return dp[m-1][n-1]; 
+	}
+
+	static int walkDP2(int m, int n)
+	{
+		if ((m == 1) || (n == 1))
+		{
+			return 1; 
+		}
+		int minD = min(m, n);
+		int maxD = max(m, n); 
+		vector<int> dp(minD, 0); 
+		for (int i = 1; i < minD ; i++)
+		{
+			dp[i]= 1; // base case
+		}
+		for (int j = 1; j < maxD; j++)
+		{
+			dp[0] = 1; 
+			for (int i = 1; i < minD; i++)
+			{
+				 dp[i] = dp[i-1] + dp[i]; 
+			}
+		}
+		
+		return dp[minD - 1]; 
+	}
 
 
 //
