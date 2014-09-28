@@ -29,9 +29,6 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.ColumnCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColumnSellCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnNewLocation = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonNext = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -53,6 +50,9 @@
             this.radioButtonTaiwan = new System.Windows.Forms.RadioButton();
             this.radioButtonUSA = new System.Windows.Forms.RadioButton();
             this.buttonUpdate = new System.Windows.Forms.Button();
+            this.ColumnCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColumnSellCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnNewLocation = new System.Windows.Forms.DataGridViewComboBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSum)).BeginInit();
@@ -77,32 +77,6 @@
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
             this.dataGridView1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
-            // 
-            // ColumnCheck
-            // 
-            this.ColumnCheck.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.ColumnCheck.HeaderText = "Select";
-            this.ColumnCheck.Name = "ColumnCheck";
-            this.ColumnCheck.Width = 43;
-            // 
-            // ColumnSellCount
-            // 
-            this.ColumnSellCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.ColumnSellCount.HeaderText = "Sell Quantity";
-            this.ColumnSellCount.Name = "ColumnSellCount";
-            this.ColumnSellCount.Width = 91;
-            // 
-            // ColumnNewLocation
-            // 
-            this.ColumnNewLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.ColumnNewLocation.HeaderText = "New Location";
-            this.ColumnNewLocation.Items.AddRange(new object[] {
-            "USA",
-            "Taiwan",
-            "In Transit",
-            "Shipping in US"});
-            this.ColumnNewLocation.Name = "ColumnNewLocation";
-            this.ColumnNewLocation.Width = 79;
             // 
             // buttonSave
             // 
@@ -346,6 +320,32 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdateLocation_Click);
             // 
+            // ColumnCheck
+            // 
+            this.ColumnCheck.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnCheck.HeaderText = "Select";
+            this.ColumnCheck.Name = "ColumnCheck";
+            this.ColumnCheck.Width = 43;
+            // 
+            // ColumnSellCount
+            // 
+            this.ColumnSellCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnSellCount.HeaderText = "Sell Quantity";
+            this.ColumnSellCount.Name = "ColumnSellCount";
+            this.ColumnSellCount.Width = 91;
+            // 
+            // ColumnNewLocation
+            // 
+            this.ColumnNewLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnNewLocation.HeaderText = "New Location";
+            this.ColumnNewLocation.Items.AddRange(new object[] {
+            "USA",
+            "Taiwan",
+            "In Transit",
+            "Shipping in US"});
+            this.ColumnNewLocation.Name = "ColumnNewLocation";
+            this.ColumnNewLocation.Width = 79;
+            // 
             // InventoryListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -384,9 +384,6 @@
         private System.Windows.Forms.CheckBox checkBoxSelectAll;
         private System.Windows.Forms.RadioButton radioButtonTransitAndTaiwan;
         private System.Windows.Forms.RadioButton radioButtonShippingInUS;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnCheck;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSellCount;
-        private System.Windows.Forms.DataGridViewComboBoxColumn ColumnNewLocation;
         public System.Windows.Forms.Button buttonUpdateLocation;
         public System.Windows.Forms.Button buttonShowSellHistory;
         public System.Windows.Forms.Button buttonSell;
@@ -396,6 +393,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonApplySQL;
         private System.Windows.Forms.TextBox textBoxSQL;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnCheck;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSellCount;
+        private System.Windows.Forms.DataGridViewComboBoxColumn ColumnNewLocation;
 
     }
 }
