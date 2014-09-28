@@ -463,5 +463,74 @@ namespace BusinessManager
             mainForm.buttonShowSellHistory.PerformClick();
             
         }
+
+        private void cellPainting()
+        {
+            if (checkBoxHighlight.Checked)
+            {
+                //MessageBox.Show("cell painting"); 
+                var vivibleRowsCount = dataGridView1.DisplayedRowCount(true);
+                var firstDisplayedRowIndex = dataGridView1.FirstDisplayedCell.RowIndex;
+                var lastvibileRowIndex = (firstDisplayedRowIndex + vivibleRowsCount) - 1;
+                Color prevColor = Color.White;
+                for (int rowIndex = firstDisplayedRowIndex; rowIndex <= lastvibileRowIndex; rowIndex++)
+                {
+                    // This cell is visible...
+                    if (dataGridView1.Rows[rowIndex].Cells["Product Name"].Value != null)
+                    {
+                        string productName = dataGridView1.Rows[rowIndex].Cells["Product Name"].Value.ToString().ToLower();
+                        string[] splitted = productName.Split(new char[1] { ' ' });
+                        string[] splittedPrevRow = splitted;
+                        Color rowColor = prevColor;
+
+                        if (rowIndex > 0)
+                        {
+                            splittedPrevRow = dataGridView1.Rows[rowIndex - 1].Cells["Product Name"].Value.ToString().ToLower().Split(new char[1] { ' ' });
+                        }
+                        if (splittedPrevRow.Length > 1 && splitted.Length > 1 && splitted[0] == splittedPrevRow[0] && splitted[1] == splittedPrevRow[1])
+                        {
+                            rowColor = prevColor;
+                        }
+                        else
+                        {
+                            rowColor = prevColor == Color.White ? Color.LightGray : Color.White;
+                            prevColor = rowColor;
+                        }
+                        var cells = dataGridView1.Rows[rowIndex].Cells;
+                        foreach (DataGridViewCell cell in cells)
+                        {
+                            if (cell.Displayed)
+                            {
+                                cell.Style.BackColor = rowColor;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            cellPainting(); 
+        }
+
+        private void checkBoxHighlight_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBoxHighlight.Checked)
+            {
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    var cells = row.Cells;
+                    foreach (DataGridViewCell cell in cells)
+                    {
+                        cell.Style.BackColor = Color.White;
+                    }
+                }
+            }
+            else
+            {
+                cellPainting();  
+            }
+        }
+
     }
 }

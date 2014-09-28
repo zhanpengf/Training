@@ -35,6 +35,10 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonNext = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonUpdateLocation = new System.Windows.Forms.Button();
+            this.buttonShowSellHistory = new System.Windows.Forms.Button();
+            this.buttonSell = new System.Windows.Forms.Button();
+            this.buttonAddNewToInv = new System.Windows.Forms.Button();
             this.checkBoxSelectAll = new System.Windows.Forms.CheckBox();
             this.groupBoxLocation = new System.Windows.Forms.GroupBox();
             this.radioButtonShippingInUS = new System.Windows.Forms.RadioButton();
@@ -44,10 +48,7 @@
             this.radioButtonTaiwan = new System.Windows.Forms.RadioButton();
             this.radioButtonUSA = new System.Windows.Forms.RadioButton();
             this.buttonUpdate = new System.Windows.Forms.Button();
-            this.buttonUpdateLocation = new System.Windows.Forms.Button();
-            this.buttonShowSellHistory = new System.Windows.Forms.Button();
-            this.buttonSell = new System.Windows.Forms.Button();
-            this.buttonAddNewToInv = new System.Windows.Forms.Button();
+            this.checkBoxHighlight = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.groupBoxLocation.SuspendLayout();
@@ -55,9 +56,9 @@
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnCheck,
@@ -67,6 +68,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1242, 333);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridView1_CellPainting);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
             this.dataGridView1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
@@ -119,8 +121,9 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.checkBoxHighlight);
             this.panel1.Controls.Add(this.buttonUpdateLocation);
             this.panel1.Controls.Add(this.buttonShowSellHistory);
             this.panel1.Controls.Add(this.buttonSell);
@@ -134,6 +137,46 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1242, 269);
             this.panel1.TabIndex = 3;
+            // 
+            // buttonUpdateLocation
+            // 
+            this.buttonUpdateLocation.Location = new System.Drawing.Point(195, 110);
+            this.buttonUpdateLocation.Name = "buttonUpdateLocation";
+            this.buttonUpdateLocation.Size = new System.Drawing.Size(137, 23);
+            this.buttonUpdateLocation.TabIndex = 11;
+            this.buttonUpdateLocation.Text = "Update Location";
+            this.buttonUpdateLocation.UseVisualStyleBackColor = true;
+            this.buttonUpdateLocation.Click += new System.EventHandler(this.buttonUpdateLocation_Click_1);
+            // 
+            // buttonShowSellHistory
+            // 
+            this.buttonShowSellHistory.Location = new System.Drawing.Point(195, 139);
+            this.buttonShowSellHistory.Name = "buttonShowSellHistory";
+            this.buttonShowSellHistory.Size = new System.Drawing.Size(137, 23);
+            this.buttonShowSellHistory.TabIndex = 10;
+            this.buttonShowSellHistory.Text = "Show Sell History";
+            this.buttonShowSellHistory.UseVisualStyleBackColor = true;
+            this.buttonShowSellHistory.Click += new System.EventHandler(this.buttonShowSellHistory_Click);
+            // 
+            // buttonSell
+            // 
+            this.buttonSell.Location = new System.Drawing.Point(195, 82);
+            this.buttonSell.Name = "buttonSell";
+            this.buttonSell.Size = new System.Drawing.Size(137, 23);
+            this.buttonSell.TabIndex = 9;
+            this.buttonSell.Text = "Sell";
+            this.buttonSell.UseVisualStyleBackColor = true;
+            this.buttonSell.Click += new System.EventHandler(this.buttonSell_Click);
+            // 
+            // buttonAddNewToInv
+            // 
+            this.buttonAddNewToInv.Location = new System.Drawing.Point(195, 53);
+            this.buttonAddNewToInv.Name = "buttonAddNewToInv";
+            this.buttonAddNewToInv.Size = new System.Drawing.Size(137, 23);
+            this.buttonAddNewToInv.TabIndex = 8;
+            this.buttonAddNewToInv.Text = "Add New to Inventory";
+            this.buttonAddNewToInv.UseVisualStyleBackColor = true;
+            this.buttonAddNewToInv.Click += new System.EventHandler(this.buttonAddNewToInv_Click);
             // 
             // checkBoxSelectAll
             // 
@@ -239,45 +282,18 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdateLocation_Click);
             // 
-            // buttonUpdateLocation
+            // checkBoxHighlight
             // 
-            this.buttonUpdateLocation.Location = new System.Drawing.Point(195, 110);
-            this.buttonUpdateLocation.Name = "buttonUpdateLocation";
-            this.buttonUpdateLocation.Size = new System.Drawing.Size(137, 23);
-            this.buttonUpdateLocation.TabIndex = 11;
-            this.buttonUpdateLocation.Text = "Update Location";
-            this.buttonUpdateLocation.UseVisualStyleBackColor = true;
-            this.buttonUpdateLocation.Click += new System.EventHandler(this.buttonUpdateLocation_Click_1);
-            // 
-            // buttonShowSellHistory
-            // 
-            this.buttonShowSellHistory.Location = new System.Drawing.Point(195, 139);
-            this.buttonShowSellHistory.Name = "buttonShowSellHistory";
-            this.buttonShowSellHistory.Size = new System.Drawing.Size(137, 23);
-            this.buttonShowSellHistory.TabIndex = 10;
-            this.buttonShowSellHistory.Text = "Show Sell History";
-            this.buttonShowSellHistory.UseVisualStyleBackColor = true;
-            this.buttonShowSellHistory.Click += new System.EventHandler(this.buttonShowSellHistory_Click);
-            // 
-            // buttonSell
-            // 
-            this.buttonSell.Location = new System.Drawing.Point(195, 82);
-            this.buttonSell.Name = "buttonSell";
-            this.buttonSell.Size = new System.Drawing.Size(137, 23);
-            this.buttonSell.TabIndex = 9;
-            this.buttonSell.Text = "Sell";
-            this.buttonSell.UseVisualStyleBackColor = true;
-            this.buttonSell.Click += new System.EventHandler(this.buttonSell_Click);
-            // 
-            // buttonAddNewToInv
-            // 
-            this.buttonAddNewToInv.Location = new System.Drawing.Point(195, 53);
-            this.buttonAddNewToInv.Name = "buttonAddNewToInv";
-            this.buttonAddNewToInv.Size = new System.Drawing.Size(137, 23);
-            this.buttonAddNewToInv.TabIndex = 8;
-            this.buttonAddNewToInv.Text = "Add New to Inventory";
-            this.buttonAddNewToInv.UseVisualStyleBackColor = true;
-            this.buttonAddNewToInv.Click += new System.EventHandler(this.buttonAddNewToInv_Click);
+            this.checkBoxHighlight.AutoSize = true;
+            this.checkBoxHighlight.Checked = true;
+            this.checkBoxHighlight.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxHighlight.Location = new System.Drawing.Point(271, 20);
+            this.checkBoxHighlight.Name = "checkBoxHighlight";
+            this.checkBoxHighlight.Size = new System.Drawing.Size(67, 17);
+            this.checkBoxHighlight.TabIndex = 12;
+            this.checkBoxHighlight.Text = "Highlight";
+            this.checkBoxHighlight.UseVisualStyleBackColor = true;
+            this.checkBoxHighlight.CheckedChanged += new System.EventHandler(this.checkBoxHighlight_CheckedChanged);
             // 
             // InventoryListForm
             // 
@@ -323,6 +339,7 @@
         public System.Windows.Forms.Button buttonShowSellHistory;
         public System.Windows.Forms.Button buttonSell;
         public System.Windows.Forms.Button buttonAddNewToInv;
+        private System.Windows.Forms.CheckBox checkBoxHighlight;
 
     }
 }

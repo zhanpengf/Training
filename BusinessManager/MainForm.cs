@@ -52,8 +52,14 @@ namespace BusinessManager
             numericExchangeRate.Value = (decimal)30.0;
             exRate = (float)numericExchangeRate.Value;
 
-            textBoxDBPath.Text = @"C:\programming\BusinessManager\database\TestMainDB.sdf";
-            LoadDBFile();
+            textBoxDBPath.Text = @"D:\Git\training\BusinessManager\database\MainDB.sdf";
+            try
+            {
+                LoadDBFile();
+            }
+            catch
+            {
+            }
             SellHistoryForm.mainForm = this;
             InventoryListForm.mainForm = this; 
 
