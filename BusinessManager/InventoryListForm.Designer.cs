@@ -35,6 +35,11 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonNext = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonApplySQL = new System.Windows.Forms.Button();
+            this.textBoxSQL = new System.Windows.Forms.TextBox();
+            this.dataGridViewSum = new System.Windows.Forms.DataGridView();
+            this.checkBoxHighlight = new System.Windows.Forms.CheckBox();
             this.buttonUpdateLocation = new System.Windows.Forms.Button();
             this.buttonShowSellHistory = new System.Windows.Forms.Button();
             this.buttonSell = new System.Windows.Forms.Button();
@@ -48,9 +53,9 @@
             this.radioButtonTaiwan = new System.Windows.Forms.RadioButton();
             this.radioButtonUSA = new System.Windows.Forms.RadioButton();
             this.buttonUpdate = new System.Windows.Forms.Button();
-            this.checkBoxHighlight = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSum)).BeginInit();
             this.groupBoxLocation.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -123,6 +128,10 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.buttonApplySQL);
+            this.panel1.Controls.Add(this.textBoxSQL);
+            this.panel1.Controls.Add(this.dataGridViewSum);
             this.panel1.Controls.Add(this.checkBoxHighlight);
             this.panel1.Controls.Add(this.buttonUpdateLocation);
             this.panel1.Controls.Add(this.buttonShowSellHistory);
@@ -138,9 +147,64 @@
             this.panel1.Size = new System.Drawing.Size(1242, 269);
             this.panel1.TabIndex = 3;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(356, 46);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(28, 13);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "SQL";
+            // 
+            // buttonApplySQL
+            // 
+            this.buttonApplySQL.Location = new System.Drawing.Point(847, 48);
+            this.buttonApplySQL.Name = "buttonApplySQL";
+            this.buttonApplySQL.Size = new System.Drawing.Size(75, 23);
+            this.buttonApplySQL.TabIndex = 15;
+            this.buttonApplySQL.Text = "Apply";
+            this.buttonApplySQL.UseVisualStyleBackColor = true;
+            this.buttonApplySQL.Click += new System.EventHandler(this.buttonApplySQL_Click);
+            // 
+            // textBoxSQL
+            // 
+            this.textBoxSQL.Location = new System.Drawing.Point(397, 46);
+            this.textBoxSQL.Multiline = true;
+            this.textBoxSQL.Name = "textBoxSQL";
+            this.textBoxSQL.Size = new System.Drawing.Size(444, 83);
+            this.textBoxSQL.TabIndex = 14;
+            this.textBoxSQL.Text = "SELECT * FROM Inventory where [Current Location] like \'Taiwan\' and [Product Name]" +
+    " like \'%Sanuk Donna%\' ";
+            // 
+            // dataGridViewSum
+            // 
+            this.dataGridViewSum.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewSum.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewSum.ColumnHeadersVisible = false;
+            this.dataGridViewSum.Location = new System.Drawing.Point(0, 6);
+            this.dataGridViewSum.Name = "dataGridViewSum";
+            this.dataGridViewSum.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dataGridViewSum.Size = new System.Drawing.Size(1242, 25);
+            this.dataGridViewSum.TabIndex = 13;
+            // 
+            // checkBoxHighlight
+            // 
+            this.checkBoxHighlight.AutoSize = true;
+            this.checkBoxHighlight.Checked = true;
+            this.checkBoxHighlight.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxHighlight.Location = new System.Drawing.Point(271, 44);
+            this.checkBoxHighlight.Name = "checkBoxHighlight";
+            this.checkBoxHighlight.Size = new System.Drawing.Size(67, 17);
+            this.checkBoxHighlight.TabIndex = 12;
+            this.checkBoxHighlight.Text = "Highlight";
+            this.checkBoxHighlight.UseVisualStyleBackColor = true;
+            this.checkBoxHighlight.CheckedChanged += new System.EventHandler(this.checkBoxHighlight_CheckedChanged);
+            // 
             // buttonUpdateLocation
             // 
-            this.buttonUpdateLocation.Location = new System.Drawing.Point(195, 110);
+            this.buttonUpdateLocation.Location = new System.Drawing.Point(195, 134);
             this.buttonUpdateLocation.Name = "buttonUpdateLocation";
             this.buttonUpdateLocation.Size = new System.Drawing.Size(137, 23);
             this.buttonUpdateLocation.TabIndex = 11;
@@ -150,7 +214,7 @@
             // 
             // buttonShowSellHistory
             // 
-            this.buttonShowSellHistory.Location = new System.Drawing.Point(195, 139);
+            this.buttonShowSellHistory.Location = new System.Drawing.Point(195, 163);
             this.buttonShowSellHistory.Name = "buttonShowSellHistory";
             this.buttonShowSellHistory.Size = new System.Drawing.Size(137, 23);
             this.buttonShowSellHistory.TabIndex = 10;
@@ -160,7 +224,7 @@
             // 
             // buttonSell
             // 
-            this.buttonSell.Location = new System.Drawing.Point(195, 82);
+            this.buttonSell.Location = new System.Drawing.Point(195, 106);
             this.buttonSell.Name = "buttonSell";
             this.buttonSell.Size = new System.Drawing.Size(137, 23);
             this.buttonSell.TabIndex = 9;
@@ -170,7 +234,7 @@
             // 
             // buttonAddNewToInv
             // 
-            this.buttonAddNewToInv.Location = new System.Drawing.Point(195, 53);
+            this.buttonAddNewToInv.Location = new System.Drawing.Point(195, 77);
             this.buttonAddNewToInv.Name = "buttonAddNewToInv";
             this.buttonAddNewToInv.Size = new System.Drawing.Size(137, 23);
             this.buttonAddNewToInv.TabIndex = 8;
@@ -181,7 +245,7 @@
             // checkBoxSelectAll
             // 
             this.checkBoxSelectAll.AutoSize = true;
-            this.checkBoxSelectAll.Location = new System.Drawing.Point(195, 20);
+            this.checkBoxSelectAll.Location = new System.Drawing.Point(195, 44);
             this.checkBoxSelectAll.Name = "checkBoxSelectAll";
             this.checkBoxSelectAll.Size = new System.Drawing.Size(70, 17);
             this.checkBoxSelectAll.TabIndex = 5;
@@ -197,7 +261,7 @@
             this.groupBoxLocation.Controls.Add(this.radioButtonInTransit);
             this.groupBoxLocation.Controls.Add(this.radioButtonTaiwan);
             this.groupBoxLocation.Controls.Add(this.radioButtonUSA);
-            this.groupBoxLocation.Location = new System.Drawing.Point(21, 11);
+            this.groupBoxLocation.Location = new System.Drawing.Point(21, 35);
             this.groupBoxLocation.Name = "groupBoxLocation";
             this.groupBoxLocation.Size = new System.Drawing.Size(151, 164);
             this.groupBoxLocation.TabIndex = 4;
@@ -282,19 +346,6 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdateLocation_Click);
             // 
-            // checkBoxHighlight
-            // 
-            this.checkBoxHighlight.AutoSize = true;
-            this.checkBoxHighlight.Checked = true;
-            this.checkBoxHighlight.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxHighlight.Location = new System.Drawing.Point(271, 20);
-            this.checkBoxHighlight.Name = "checkBoxHighlight";
-            this.checkBoxHighlight.Size = new System.Drawing.Size(67, 17);
-            this.checkBoxHighlight.TabIndex = 12;
-            this.checkBoxHighlight.Text = "Highlight";
-            this.checkBoxHighlight.UseVisualStyleBackColor = true;
-            this.checkBoxHighlight.CheckedChanged += new System.EventHandler(this.checkBoxHighlight_CheckedChanged);
-            // 
             // InventoryListForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -311,6 +362,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSum)).EndInit();
             this.groupBoxLocation.ResumeLayout(false);
             this.groupBoxLocation.PerformLayout();
             this.ResumeLayout(false);
@@ -340,6 +392,10 @@
         public System.Windows.Forms.Button buttonSell;
         public System.Windows.Forms.Button buttonAddNewToInv;
         private System.Windows.Forms.CheckBox checkBoxHighlight;
+        private System.Windows.Forms.DataGridView dataGridViewSum;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button buttonApplySQL;
+        private System.Windows.Forms.TextBox textBoxSQL;
 
     }
 }

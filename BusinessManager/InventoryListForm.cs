@@ -80,6 +80,15 @@ namespace BusinessManager
             dataGridView1.Columns["Current Location"].Width = 60;
             dataGridView1.Columns["Purchasing Date"].Width = 75;
             dataGridView1.Columns["Expiration Date"].Width = 75;
+            // update datagridviewSum
+            //if (dataGridView1.Columns.Count != dataGridViewSum.Columns.Count)
+            //{
+            //    for (int i = 0; i < dataGridView1.Columns.Count; i++)
+            //    {
+            //        dataGridViewSum.Columns.Add((DataGridViewColumn)dataGridView1.Columns[i].Clone());
+            //    }
+            //    updateSum();
+            //}
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -391,7 +400,11 @@ namespace BusinessManager
             {
                 queryString = "SELECT * FROM Inventory where [Current Location] = 'USA'";
             }
+            submitQuery(queryString);             
+        }
 
+        private void submitQuery(string queryString)
+        {
             SqlCeCommand cmd = new SqlCeCommand(queryString, sqlAdapterInv.SelectCommand.Connection);
             SqlCeDataReader reader = cmd.ExecuteReader();
             inventoryTable.Clear();
@@ -529,6 +542,67 @@ namespace BusinessManager
             else
             {
                 cellPainting();  
+            }
+        }
+
+        private void buttonApplySQL_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                submitQuery(textBoxSQL.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid query."); 
+            }
+        }
+
+        private void updateSum()
+        {
+            try
+            {
+                // Update the sum
+                if (dataGridViewSum.Rows.Count < 1)
+                {
+                    dataGridViewSum.Rows.Add();
+                }
+                //dataGridViewSum.Rows.Clear();
+                DataGridViewRow sumDR = dataGridViewSum.Rows[0];
+                //dataGridViewSum.Rows.Add(sumDR);
+                float sumProfit = 0;
+                float sumCost = 0;
+                float sumCost_TWD = 0;
+                float sumInterShipping = 0;
+                float sumInterShippingTWD = 0;
+                float sumSellingPrice = 0;
+                float sumDomShipping = 0;
+                float sumCustPaidShipping = 0;
+                float sumQuantity = 0;
+                foreach (DataGridViewRow dr1 in dataGridView1.Rows)
+                {
+                    sumProfit += Convert.ToSingle(dr1.Cells["Profit"].Value);
+                    sumSellingPrice += Convert.ToSingle(dr1.Cells["Selling Price"].Value);
+                    sumCost += Convert.ToSingle(dr1.Cells["Cost"].Value);
+                    sumCost_TWD += Convert.ToSingle(dr1.Cells["Cost_TWD"].Value);
+                    sumCustPaidShipping += Convert.ToSingle(dr1.Cells["Customer Paid Shipping"].Value);
+                    sumDomShipping += Convert.ToSingle(dr1.Cells["Domestic Shipping"].Value);
+                    sumInterShipping += Convert.ToSingle(dr1.Cells["International Shipping"].Value);
+                    sumInterShippingTWD += Convert.ToSingle(dr1.Cells["InterShipping_TWD"].Value);
+                    sumQuantity += Convert.ToSingle(dr1.Cells["Quantity"].Value);
+                }
+                sumDR.Cells["Products"].Value = "Sum";
+                sumDR.Cells["Profit"].Value = sumProfit;
+                sumDR.Cells["Selling Price"].Value = sumSellingPrice;
+                sumDR.Cells["Cost"].Value = sumCost;
+                sumDR.Cells["Cost_TWD"].Value = sumCost_TWD;
+                sumDR.Cells["Customer Paid Shipping"].Value = sumCustPaidShipping;
+                sumDR.Cells["Domestic Shipping"].Value = sumDomShipping;
+                sumDR.Cells["International Shipping"].Value = sumInterShipping;
+                sumDR.Cells["InterShipping_TWD"].Value = sumInterShippingTWD;
+                sumDR.Cells["Quantity"].Value = sumQuantity;
+            }
+            catch
+            {
             }
         }
 
