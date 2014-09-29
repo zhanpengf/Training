@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ColumnCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ColumnSellCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnNewLocation = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonNext = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -50,9 +53,7 @@
             this.radioButtonTaiwan = new System.Windows.Forms.RadioButton();
             this.radioButtonUSA = new System.Windows.Forms.RadioButton();
             this.buttonUpdate = new System.Windows.Forms.Button();
-            this.ColumnCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColumnSellCount = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnNewLocation = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.buttonShowAll = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSum)).BeginInit();
@@ -61,9 +62,9 @@
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnCheck,
@@ -77,6 +78,32 @@
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
             this.dataGridView1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
+            // 
+            // ColumnCheck
+            // 
+            this.ColumnCheck.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnCheck.HeaderText = "Select";
+            this.ColumnCheck.Name = "ColumnCheck";
+            this.ColumnCheck.Width = 43;
+            // 
+            // ColumnSellCount
+            // 
+            this.ColumnSellCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnSellCount.HeaderText = "Sell Quantity";
+            this.ColumnSellCount.Name = "ColumnSellCount";
+            this.ColumnSellCount.Width = 91;
+            // 
+            // ColumnNewLocation
+            // 
+            this.ColumnNewLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.ColumnNewLocation.HeaderText = "New Location";
+            this.ColumnNewLocation.Items.AddRange(new object[] {
+            "USA",
+            "Taiwan",
+            "In Transit",
+            "Shipping in US"});
+            this.ColumnNewLocation.Name = "ColumnNewLocation";
+            this.ColumnNewLocation.Width = 79;
             // 
             // buttonSave
             // 
@@ -100,8 +127,9 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.buttonShowAll);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.buttonApplySQL);
             this.panel1.Controls.Add(this.textBoxSQL);
@@ -148,13 +176,13 @@
             this.textBoxSQL.Size = new System.Drawing.Size(444, 83);
             this.textBoxSQL.TabIndex = 14;
             this.textBoxSQL.Text = "SELECT * FROM Inventory where [Current Location] like \'Taiwan\' and [Product Name]" +
-    " like \'%Sanuk Donna%\' ";
+                " like \'%Sanuk Donna%\' ";
             // 
             // dataGridViewSum
             // 
-            this.dataGridViewSum.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewSum.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewSum.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewSum.ColumnHeadersVisible = false;
             this.dataGridViewSum.Location = new System.Drawing.Point(0, 6);
@@ -320,31 +348,15 @@
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdateLocation_Click);
             // 
-            // ColumnCheck
+            // buttonShowAll
             // 
-            this.ColumnCheck.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ColumnCheck.HeaderText = "Select";
-            this.ColumnCheck.Name = "ColumnCheck";
-            this.ColumnCheck.Width = 43;
-            // 
-            // ColumnSellCount
-            // 
-            this.ColumnSellCount.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ColumnSellCount.HeaderText = "Sell Quantity";
-            this.ColumnSellCount.Name = "ColumnSellCount";
-            this.ColumnSellCount.Width = 91;
-            // 
-            // ColumnNewLocation
-            // 
-            this.ColumnNewLocation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ColumnNewLocation.HeaderText = "New Location";
-            this.ColumnNewLocation.Items.AddRange(new object[] {
-            "USA",
-            "Taiwan",
-            "In Transit",
-            "Shipping in US"});
-            this.ColumnNewLocation.Name = "ColumnNewLocation";
-            this.ColumnNewLocation.Width = 79;
+            this.buttonShowAll.Location = new System.Drawing.Point(847, 77);
+            this.buttonShowAll.Name = "buttonShowAll";
+            this.buttonShowAll.Size = new System.Drawing.Size(75, 23);
+            this.buttonShowAll.TabIndex = 17;
+            this.buttonShowAll.Text = "All";
+            this.buttonShowAll.UseVisualStyleBackColor = true;
+            this.buttonShowAll.Click += new System.EventHandler(this.buttonShowAll_Click);
             // 
             // InventoryListForm
             // 
@@ -396,6 +408,7 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnCheck;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSellCount;
         private System.Windows.Forms.DataGridViewComboBoxColumn ColumnNewLocation;
+        private System.Windows.Forms.Button buttonShowAll;
 
     }
 }

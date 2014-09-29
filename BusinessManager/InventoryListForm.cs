@@ -588,5 +588,11 @@ namespace BusinessManager
             }
         }
 
+        private void buttonShowAll_Click(object sender, EventArgs e)
+        {
+            string queryString = "SELECT * FROM Inventory";
+            submitQuery(queryString); 
+        }
+
     }
 }
