@@ -52,7 +52,7 @@ namespace BusinessManager
             numericExchangeRate.Value = (decimal)30.0;
             exRate = (float)numericExchangeRate.Value;
 
-            textBoxDBPath.Text = @"D:\Git\training\BusinessManager\database\MainDB.sdf";
+            textBoxDBPath.Text = @"C:\programming\Training\BusinessManager\database\MainDB.sdf";
             try
             {
                 LoadDBFile();
