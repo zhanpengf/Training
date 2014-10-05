@@ -35,6 +35,7 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonNext = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonShowAll = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonApplySQL = new System.Windows.Forms.Button();
             this.textBoxSQL = new System.Windows.Forms.TextBox();
@@ -53,7 +54,6 @@
             this.radioButtonTaiwan = new System.Windows.Forms.RadioButton();
             this.radioButtonUSA = new System.Windows.Forms.RadioButton();
             this.buttonUpdate = new System.Windows.Forms.Button();
-            this.buttonShowAll = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSum)).BeginInit();
@@ -72,12 +72,14 @@
             this.ColumnNewLocation});
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(1242, 333);
+            this.dataGridView1.Size = new System.Drawing.Size(1242, 336);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridView1_CellPainting);
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
             this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
             this.dataGridView1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
+            this.dataGridView1.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridView1_RowsAdded);
+            this.dataGridView1.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.dataGridView1_RowsRemoved);
+            this.dataGridView1.Sorted += new System.EventHandler(this.dataGridView1_Sorted);
             // 
             // ColumnCheck
             // 
@@ -149,6 +151,16 @@
             this.panel1.Size = new System.Drawing.Size(1242, 269);
             this.panel1.TabIndex = 3;
             // 
+            // buttonShowAll
+            // 
+            this.buttonShowAll.Location = new System.Drawing.Point(847, 77);
+            this.buttonShowAll.Name = "buttonShowAll";
+            this.buttonShowAll.Size = new System.Drawing.Size(75, 23);
+            this.buttonShowAll.TabIndex = 17;
+            this.buttonShowAll.Text = "All";
+            this.buttonShowAll.UseVisualStyleBackColor = true;
+            this.buttonShowAll.Click += new System.EventHandler(this.buttonShowAll_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -185,7 +197,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewSum.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewSum.ColumnHeadersVisible = false;
-            this.dataGridViewSum.Location = new System.Drawing.Point(0, 6);
+            this.dataGridViewSum.Location = new System.Drawing.Point(0, 3);
             this.dataGridViewSum.Name = "dataGridViewSum";
             this.dataGridViewSum.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.dataGridViewSum.Size = new System.Drawing.Size(1242, 25);
@@ -347,16 +359,6 @@
             this.buttonUpdate.Text = "Update";
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdateLocation_Click);
-            // 
-            // buttonShowAll
-            // 
-            this.buttonShowAll.Location = new System.Drawing.Point(847, 77);
-            this.buttonShowAll.Name = "buttonShowAll";
-            this.buttonShowAll.Size = new System.Drawing.Size(75, 23);
-            this.buttonShowAll.TabIndex = 17;
-            this.buttonShowAll.Text = "All";
-            this.buttonShowAll.UseVisualStyleBackColor = true;
-            this.buttonShowAll.Click += new System.EventHandler(this.buttonShowAll_Click);
             // 
             // InventoryListForm
             // 

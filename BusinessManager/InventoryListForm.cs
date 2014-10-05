@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlServerCe;
+using System.Collections; 
 
 namespace BusinessManager
 {
@@ -24,6 +25,7 @@ namespace BusinessManager
         public float exRate;
         AddNewSellForm addNewSellForm;
         public InvFormType formType;
+        private bool formLoaded = false;
         public InventoryListForm()
         {
             InitializeComponent();
@@ -47,6 +49,7 @@ namespace BusinessManager
             //dataGridView1.DataSource = inventoryTable;
             //inventoryTable.Clear();
             //sqlAdapterInv.Fill(inventoryTable);
+            formLoaded = false; 
             checkBoxSelectAll.Checked = false;
             radioButtonLocation_CheckedChanged(new object(),new EventArgs()); 
 
@@ -89,6 +92,8 @@ namespace BusinessManager
                 }
                 updateSum();
             }
+            reCalculateCellHighlight();
+            formLoaded = true; 
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -475,58 +480,60 @@ namespace BusinessManager
 
         private void buttonShowSellHistory_Click(object sender, EventArgs e)
         {
-            mainForm.buttonShowSellHistory.PerformClick();
-            
+            mainForm.buttonShowSellHistory.PerformClick();            
         }
 
-        private void cellPainting()
-        {
-            if (checkBoxHighlight.Checked)
-            {
-                //MessageBox.Show("cell painting"); 
-                var vivibleRowsCount = dataGridView1.DisplayedRowCount(true);
-                var firstDisplayedRowIndex = dataGridView1.FirstDisplayedCell.RowIndex;
-                var lastvibileRowIndex = (firstDisplayedRowIndex + vivibleRowsCount) - 1;
-                Color prevColor = Color.White;
-                for (int rowIndex = firstDisplayedRowIndex; rowIndex <= lastvibileRowIndex; rowIndex++)
-                {
-                    // This cell is visible...
-                    if (dataGridView1.Rows[rowIndex].Cells["Product Name"].Value != null)
-                    {
-                        string productName = dataGridView1.Rows[rowIndex].Cells["Product Name"].Value.ToString().ToLower();
-                        string[] splitted = productName.Split(new char[1] { ' ' });
-                        string[] splittedPrevRow = splitted;
-                        Color rowColor = prevColor;
+        //private void paintHighLight()
+        //{
+        //    if (checkBoxHighlight.Checked)
+        //    {
+        //        isPaintingHighLight = true; 
+        //        //MessageBox.Show("cell painting"); 
+        //        var visibleRowsCount = dataGridView1.DisplayedRowCount(true);
+        //        var firstDisplayedRowIndex = dataGridView1.FirstDisplayedCell.RowIndex;
+        //        var lastvisibleRowIndex = (firstDisplayedRowIndex + visibleRowsCount) - 1;
+        //        Color prevColor = Color.White;
+        //        for (int rowIndex = firstDisplayedRowIndex; rowIndex <= lastvisibleRowIndex; rowIndex++)
+        //        {
+        //            // This cell is visible...
+        //            if (dataGridView1.Rows[rowIndex].Cells["Product Name"].Value != null)
+        //            {
+        //                string productName = dataGridView1.Rows[rowIndex].Cells["Product Name"].Value.ToString().ToLower();
+        //                string[] splitted = productName.Split(new char[1] { ' ' });
+        //                string[] splittedPrevRow = splitted;
+        //                Color rowColor = prevColor;
 
-                        if (rowIndex > 0)
-                        {
-                            splittedPrevRow = dataGridView1.Rows[rowIndex - 1].Cells["Product Name"].Value.ToString().ToLower().Split(new char[1] { ' ' });
-                        }
-                        if (splittedPrevRow.Length > 1 && splitted.Length > 1 && splitted[0] == splittedPrevRow[0] && splitted[1] == splittedPrevRow[1])
-                        {
-                            rowColor = prevColor;
-                        }
-                        else
-                        {
-                            rowColor = prevColor == Color.White ? Color.LightGray : Color.White;
-                            prevColor = rowColor;
-                        }
-                        var cells = dataGridView1.Rows[rowIndex].Cells;
-                        foreach (DataGridViewCell cell in cells)
-                        {
-                            if (cell.Displayed)
-                            {
-                                cell.Style.BackColor = rowColor;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
-        {
-            cellPainting(); 
-        }
+        //                // old way
+        //                //if (rowIndex > 0)
+        //                //{
+        //                //    splittedPrevRow = dataGridView1.Rows[rowIndex - 1].Cells["Product Name"].Value.ToString().ToLower().Split(new char[1] { ' ' });
+        //                //}
+        //                //if (splittedPrevRow.Length > 1 && splitted.Length > 1 && splitted[0] == splittedPrevRow[0] && splitted[1] == splittedPrevRow[1])
+        //                //{
+        //                //    rowColor = prevColor;
+        //                //}
+        //                //else
+        //                //{
+        //                //    rowColor = prevColor == Color.White ? Color.LightGray : Color.White;
+        //                //    prevColor = rowColor;
+        //                //}
+
+        //                // new way
+        //                rowColor = (Color)rowColors[rowIndex]; 
+
+        //                var cells = dataGridView1.Rows[rowIndex].Cells;
+        //                foreach (DataGridViewCell cell in cells)
+        //                {
+        //                    if (cell.Displayed)
+        //                    {
+        //                        cell.Style.BackColor = rowColor;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    isPaintingHighLight = false; 
+        //}
 
         private void checkBoxHighlight_CheckedChanged(object sender, EventArgs e)
         {
@@ -543,7 +550,7 @@ namespace BusinessManager
             }
             else
             {
-                cellPainting();  
+                reCalculateCellHighlight();
             }
         }
 
@@ -592,6 +599,64 @@ namespace BusinessManager
         {
             string queryString = "SELECT * FROM Inventory";
             submitQuery(queryString); 
+        }
+
+        private void dataGridView1_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            if (formLoaded)
+            {
+                reCalculateCellHighlight();
+            }
+        }
+
+        private void dataGridView1_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            if (formLoaded)
+            {
+                reCalculateCellHighlight();
+            }
+        }
+
+        private void dataGridView1_Sorted(object sender, EventArgs e)
+        {
+            if (formLoaded)
+            {
+                reCalculateCellHighlight();
+            }
+        }
+
+        private void reCalculateCellHighlight()
+        {
+            Color prevColor = Color.White;
+            for (int rowIndex = 0; rowIndex < dataGridView1.Rows.Count; rowIndex++)
+            {
+                if (dataGridView1.Rows[rowIndex].Cells["Product Name"].Value != null)
+                {
+                    string productName = dataGridView1.Rows[rowIndex].Cells["Product Name"].Value.ToString().ToLower();
+                    string[] splitted = productName.Split(new char[1] { ' ' });
+                    string[] splittedPrevRow = splitted;
+                    Color rowColor = prevColor;
+
+                    if (rowIndex > 0)
+                    {
+                        splittedPrevRow = dataGridView1.Rows[rowIndex - 1].Cells["Product Name"].Value.ToString().ToLower().Split(new char[1] { ' ' });
+                    }
+                    if (splittedPrevRow.Length > 1 && splitted.Length > 1 && splitted[0] == splittedPrevRow[0] && splitted[1] == splittedPrevRow[1])
+                    {
+                        rowColor = prevColor;
+                    }
+                    else
+                    {
+                        rowColor = prevColor == Color.White ? Color.LightGray : Color.White;
+                        prevColor = rowColor;
+                    }
+                    var cells = dataGridView1.Rows[rowIndex].Cells;
+                    foreach (DataGridViewCell cell in cells)
+                    {
+                        cell.Style.BackColor = rowColor;
+                    }
+                }
+            }
         }
 
     }
