@@ -52,6 +52,7 @@
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
+            this.buttonChart = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -85,6 +86,7 @@
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.buttonChart);
             this.panel1.Controls.Add(this.buttonUpdateLocation);
             this.panel1.Controls.Add(this.buttonSell);
             this.panel1.Controls.Add(this.buttonAddNewToInv);
@@ -328,6 +330,16 @@
             this.dateTimePickerFrom.TabIndex = 6;
             this.dateTimePickerFrom.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
             // 
+            // buttonChart
+            // 
+            this.buttonChart.Location = new System.Drawing.Point(485, 40);
+            this.buttonChart.Name = "buttonChart";
+            this.buttonChart.Size = new System.Drawing.Size(75, 23);
+            this.buttonChart.TabIndex = 20;
+            this.buttonChart.Text = "Chart";
+            this.buttonChart.UseVisualStyleBackColor = true;
+            this.buttonChart.Click += new System.EventHandler(this.buttonChart_Click);
+            // 
             // SellHistoryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -378,5 +390,6 @@
         private System.Windows.Forms.Button buttonUpdateLocation;
         private System.Windows.Forms.Button buttonSell;
         private System.Windows.Forms.Button buttonAddNewToInv;
+        private System.Windows.Forms.Button buttonChart;
     }
 }

@@ -53,6 +53,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -74,6 +75,12 @@
     </Compile>
     <Compile Include="AddNewSellForm.Designer.cs">
       <DependentUpon>AddNewSellForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChartingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChartingForm.Designer.cs">
+      <DependentUpon>ChartingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="InventoryListForm.cs">
       <SubType>Form</SubType>
@@ -105,6 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddNewSellForm.resx">
       <DependentUpon>AddNewSellForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChartingForm.resx">
+      <DependentUpon>ChartingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryListForm.resx">
       <DependentUpon>InventoryListForm.cs</DependentUpon>

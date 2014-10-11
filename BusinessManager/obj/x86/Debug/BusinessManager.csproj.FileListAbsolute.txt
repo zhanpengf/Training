@@ -28,3 +28,4 @@ C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.Properties
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.SellHistoryForm.resources
 C:\programming\Training\BusinessManager\obj\x86\Debug\GenerateResource.read.1.tlog
 C:\programming\Training\BusinessManager\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.ChartingForm.resources
