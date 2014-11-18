@@ -76,7 +76,19 @@ namespace BusinessManager
 
         private void numericUpDownPurchasingPriceBeforeTax_ValueChanged(object sender, EventArgs e)
         {
-            numericPurchasingPrice.Value = numericUpDownPurchasingPriceBeforeTax.Value * (1+numericUpDownTaxRate.Value / 100); 
+            updateAfterTax();
+        }
+
+        private void numericUpDownDiscount_ValueChanged(object sender, EventArgs e)
+        {
+            updateAfterTax();
+        }
+
+        private void updateAfterTax()
+        {
+            numericPurchasingPrice.Value = numericUpDownPurchasingPriceBeforeTax.Value
+                * (1 + numericUpDownTaxRate.Value / 100)
+                * (1 - numericUpDownDiscount.Value / 100); 
         }
     }
 }
