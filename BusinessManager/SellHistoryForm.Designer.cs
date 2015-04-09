@@ -31,6 +31,7 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonChart = new System.Windows.Forms.Button();
             this.buttonUpdateLocation = new System.Windows.Forms.Button();
             this.buttonSell = new System.Windows.Forms.Button();
             this.buttonAddNewToInv = new System.Windows.Forms.Button();
@@ -52,7 +53,6 @@
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
-            this.buttonChart = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -81,6 +81,8 @@
             this.dataGridView1.Size = new System.Drawing.Size(1242, 309);
             this.dataGridView1.TabIndex = 3;
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+            this.dataGridView1.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dataGridView1_ColumnWidthChanged);
+            this.dataGridView1.CurrentCellDirtyStateChanged += new System.EventHandler(this.dataGridView1_CurrentCellDirtyStateChanged);
             // 
             // panel1
             // 
@@ -107,6 +109,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1242, 200);
             this.panel1.TabIndex = 6;
+            // 
+            // buttonChart
+            // 
+            this.buttonChart.Location = new System.Drawing.Point(485, 40);
+            this.buttonChart.Name = "buttonChart";
+            this.buttonChart.Size = new System.Drawing.Size(75, 23);
+            this.buttonChart.TabIndex = 20;
+            this.buttonChart.Text = "Chart";
+            this.buttonChart.UseVisualStyleBackColor = true;
+            this.buttonChart.Click += new System.EventHandler(this.buttonChart_Click);
             // 
             // buttonUpdateLocation
             // 
@@ -329,16 +341,6 @@
             this.dateTimePickerFrom.Size = new System.Drawing.Size(114, 20);
             this.dateTimePickerFrom.TabIndex = 6;
             this.dateTimePickerFrom.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
-            // 
-            // buttonChart
-            // 
-            this.buttonChart.Location = new System.Drawing.Point(485, 40);
-            this.buttonChart.Name = "buttonChart";
-            this.buttonChart.Size = new System.Drawing.Size(75, 23);
-            this.buttonChart.TabIndex = 20;
-            this.buttonChart.Text = "Chart";
-            this.buttonChart.UseVisualStyleBackColor = true;
-            this.buttonChart.Click += new System.EventHandler(this.buttonChart_Click);
             // 
             // SellHistoryForm
             // 

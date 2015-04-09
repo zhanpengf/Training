@@ -659,5 +659,13 @@ namespace BusinessManager
             }
         }
 
+        private void dataGridView1_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            if (dataGridViewSum != null && dataGridView1.Columns.Count == dataGridViewSum.Columns.Count)
+            {
+                dataGridViewSum.Columns[e.Column.Index].Width = e.Column.Width;
+            }
+        }
+
     }
 }

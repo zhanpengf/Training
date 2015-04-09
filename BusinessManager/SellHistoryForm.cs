@@ -15,6 +15,7 @@ namespace BusinessManager
     /// ChooseExisting is specifically for adding new items to an existing sell history
     /// </summary>
     public enum SellHistFormType { Normal, ChooseExisting };
+    
     public partial class SellHistoryForm : Form
     {
         public static MainForm mainForm; 
@@ -26,6 +27,7 @@ namespace BusinessManager
         private bool duringInit;
         public SellHistFormType formType;
         public int ChosenID = 0; 
+        const int _7_11_column_index = 3; 
         public SellHistoryForm()
         {
             InitializeComponent();
@@ -57,6 +59,8 @@ namespace BusinessManager
             dataGridView1.Columns["Sell ID"].Width = 60;
             dataGridView1.Columns["Paid"].Width = 40;
             dataGridView1.Columns["Shipped"].Width = 50;
+            dataGridView1.Columns["7-11"].Width = 50;
+            dataGridView1.Columns["7-11"].HeaderText = "7-11 Ruten"; 
 
             if (formType == SellHistFormType.Normal)
             {
@@ -73,7 +77,18 @@ namespace BusinessManager
             {
                 for (int i = 0; i < dataGridView1.Columns.Count; i++)
                 {
-                    dataGridViewSum.Columns.Add((DataGridViewColumn)dataGridView1.Columns[i].Clone());
+                    // special treatment to column _7_11_column_index, where the sum is a number, while the original column is a checkbox
+                    if (i == _7_11_column_index)
+                    {
+                        dataGridViewSum.Columns.Add("7-11", "");
+                        dataGridViewSum.Columns[i].Width = dataGridView1.Columns[i].Width; 
+                        //dataGridViewSum.Columns.Add(
+                        dataGridViewSum.Rows[0].Cells[i].Value = "";
+                    }
+                    else
+                    {
+                        dataGridViewSum.Columns.Add((DataGridViewColumn)dataGridView1.Columns[i].Clone());
+                    }
                 }
                 updateSum();
             }
@@ -84,45 +99,79 @@ namespace BusinessManager
         {
             if (e.RowIndex >= 0)
             {
-                try
+                DataGridViewRow dr = dataGridView1.Rows[e.RowIndex];
+                if (e.ColumnIndex == _7_11_column_index)
                 {
-                    this.dataGridView1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
-                    DataGridViewRow dr = dataGridView1.Rows[e.RowIndex];
-                    //if this is a new row, initialize the datarow first
-                    if ((DBNull.Value.Equals(dr.Cells["Cost_TWD"].Value))||(DBNull.Value.Equals(dr.Cells["Cost"].Value)))
-                    //if (e.RowIndex == dataGridView1.Rows.Count - 2)
+                    if (dataGridViewSum.Rows.Count < 1)
                     {
-                        object temp = dr.Cells[e.ColumnIndex].Value;
-                        //dr.Cells["Sell ID"].Value = ""; 
-                        dr.Cells["Products"].Value = "";
-                        dr.Cells["Selling Price"].Value = 0;
-                        dr.Cells["Quantity"].Value = 0;
-                        dr.Cells["Notes"].Value = "";
-                        dr.Cells["Date"].Value = DateTime.Now;
-                        dr.Cells["International Shipping"].Value = 0;
-                        dr.Cells["Cost"].Value = 0;
-                        dr.Cells["Profit"].Value = 0;
-                        dr.Cells["Domestic Shipping"].Value = 0;
-                        dr.Cells["Customer Paid Shipping"].Value = 0;
-                        dr.Cells[e.ColumnIndex].Value = temp;
+                        dataGridViewSum.Rows.Add();
                     }
-
-                    dr.Cells["InterShipping_TWD"].Value = Convert.ToSingle(dr.Cells["International Shipping"].Value) * exRate;
-                    dr.Cells["Cost_TWD"].Value = Convert.ToSingle(dr.Cells["Cost"].Value) * exRate;
-
-                    dr.Cells["Profit"].Value = Convert.ToSingle(dr.Cells["Selling Price"].Value) - Convert.ToSingle(dr.Cells["Cost_TWD"].Value)
-                        - Convert.ToSingle(dr.Cells["InterShipping_TWD"].Value) -
-                        Convert.ToSingle(dr.Cells["Domestic Shipping"].Value) +
-                        Convert.ToSingle(dr.Cells["Customer Paid Shipping"].Value);
-                    
-                    this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
-
-                    updateSum();
-                    
+                    //dataGridViewSum.Rows.Clear();
+                    DataGridViewRow sumDR = dataGridViewSum.Rows[0];
+                    int sum7_11 = 0;
+                    foreach (DataGridViewRow dr1 in dataGridView1.Rows)
+                    {
+                        if (dr1.Cells != null && dr1.Cells["7-11"].Value != null 
+                            && !DBNull.Value.Equals(dr1.Cells["7-11"].Value) 
+                            && ((bool)dr1.Cells["7-11"].Value))
+                        {
+                            sum7_11++;
+                        }
+                        //sum7_11++; 
+                        //try
+                        //{
+                        //    sum7_11 += Convert.ToInt16(dr1.Cells["7-11"].Value);
+                        //}
+                        //catch
+                        //{
+                        //}
+                    }
+                    sumDR.Cells["7-11"].Value = sum7_11 * 60;
                 }
-                catch
+                else
                 {
-                    this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+                    try
+                    {
+                        this.dataGridView1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+                        //if this is a new row, initialize the datarow first
+                        // this logic seems weird, commented out 04/08/2015
+                        //if ((DBNull.Value.Equals(dr.Cells["Cost_TWD"].Value))
+                        //    || (DBNull.Value.Equals(dr.Cells["Cost"].Value)))
+                        //{
+                        //    object temp = dr.Cells[e.ColumnIndex].Value;
+                        //    //dr.Cells["Sell ID"].Value = ""; 
+                        //    dr.Cells["Products"].Value = "";
+                        //    dr.Cells["Selling Price"].Value = 0;
+                        //    dr.Cells["Quantity"].Value = 0;
+                        //    dr.Cells["Notes"].Value = "";
+                        //    dr.Cells["Date"].Value = DateTime.Now;
+                        //    dr.Cells["International Shipping"].Value = 0;
+                        //    dr.Cells["Cost"].Value = 0;
+                        //    dr.Cells["Profit"].Value = 0;
+                        //    dr.Cells["Domestic Shipping"].Value = 0;
+                        //    dr.Cells["Customer Paid Shipping"].Value = 0;
+                        //    dr.Cells[e.ColumnIndex].Value = temp;
+                        //}
+                        if (DBNull.Value.Equals(dr.Cells[e.ColumnIndex].Value))
+                        {
+                            dr.Cells[e.ColumnIndex].Value = 0;
+                        }
+
+                        dr.Cells["InterShipping_TWD"].Value = Convert.ToSingle(dr.Cells["International Shipping"].Value) * exRate;
+                        dr.Cells["Cost_TWD"].Value = Convert.ToSingle(dr.Cells["Cost"].Value) * exRate;
+
+                        dr.Cells["Profit"].Value = Convert.ToSingle(dr.Cells["Selling Price"].Value) - Convert.ToSingle(dr.Cells["Cost_TWD"].Value)
+                            - Convert.ToSingle(dr.Cells["InterShipping_TWD"].Value) -
+                            Convert.ToSingle(dr.Cells["Domestic Shipping"].Value) +
+                            Convert.ToSingle(dr.Cells["Customer Paid Shipping"].Value);
+
+                        this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+                        updateSum();
+                    }
+                    catch
+                    {
+                        this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+                    }
                 }
             }
         }
@@ -147,7 +196,8 @@ namespace BusinessManager
                 float sumSellingPrice = 0;
                 float sumDomShipping = 0;
                 float sumCustPaidShipping = 0;
-                float sumQuantity = 0; 
+                float sumQuantity = 0;
+                int sum7_11 = 0; 
                 foreach (DataGridViewRow dr1 in dataGridView1.Rows)
                 {
                     sumProfit += Convert.ToSingle(dr1.Cells["Profit"].Value);
@@ -159,6 +209,12 @@ namespace BusinessManager
                     sumInterShipping += Convert.ToSingle(dr1.Cells["International Shipping"].Value);
                     sumInterShippingTWD += Convert.ToSingle(dr1.Cells["InterShipping_TWD"].Value);
                     sumQuantity += Convert.ToSingle(dr1.Cells["Quantity"].Value);
+                    if (dr1.Cells != null && dr1.Cells["7-11"].Value != null
+                            && !DBNull.Value.Equals(dr1.Cells["7-11"].Value)
+                            && ((bool)dr1.Cells["7-11"].Value))
+                    {
+                        sum7_11++;
+                    }
                 }
                 sumDR.Cells["Products"].Value = "Sum";
                 sumDR.Cells["Profit"].Value = sumProfit;
@@ -169,7 +225,8 @@ namespace BusinessManager
                 sumDR.Cells["Domestic Shipping"].Value = sumDomShipping;
                 sumDR.Cells["International Shipping"].Value = sumInterShipping;
                 sumDR.Cells["InterShipping_TWD"].Value = sumInterShippingTWD;
-                sumDR.Cells["Quantity"].Value = sumQuantity; 
+                sumDR.Cells["Quantity"].Value = sumQuantity;
+                sumDR.Cells["7-11"].Value = sum7_11 * 60; 
             }
             catch
             {
@@ -353,6 +410,22 @@ namespace BusinessManager
             //yNames[1] = "Selling Price"; 
             chartingForm.updateChart(tempTable, "Quantity", yNames);
             chartingForm.ShowDialog();
+        }
+
+        private void dataGridView1_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.IsCurrentCellDirty)
+            {
+                dataGridView1.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            }
+        }
+
+        private void dataGridView1_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            if (dataGridViewSum != null && dataGridView1.Columns.Count == dataGridViewSum.Columns.Count)
+            {
+                dataGridViewSum.Columns[e.Column.Index].Width = e.Column.Width;
+            }
         }
     }
 }

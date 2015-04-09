@@ -16,7 +16,6 @@ C:\programming\BusinessManager\obj\x86\Debug\BusinessManager.SellHistoryForm.res
 C:\programming\Training\BusinessManager\bin\Debug\BusinessManager.exe.config
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.exe
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.pdb
-C:\programming\Training\BusinessManager\bin\Debug\MainDB.sdf
 C:\programming\Training\BusinessManager\bin\Debug\BusinessManager.exe
 C:\programming\Training\BusinessManager\bin\Debug\BusinessManager.pdb
 C:\programming\Training\BusinessManager\obj\x86\Debug\ResolveAssemblyReference.cache

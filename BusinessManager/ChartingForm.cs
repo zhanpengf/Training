@@ -23,7 +23,12 @@ namespace BusinessManager
             
             // Set chart data source
             chart1.DataSource = table;
-            chart1.Series.Clear(); 
+            chart1.Series.Clear();
+            //chart1.ChartAreas[0].AxisX.CustomLabels 
+            chart1.ChartAreas[0].AxisX.MajorGrid.Interval = 1.0;
+            chart1.ChartAreas[0].AxisX.MinorGrid.Interval = 1.0;
+            chart1.ChartAreas[0].AxisY.MajorGrid.Interval = 10000.0;
+            chart1.ChartAreas[0].AxisY.MinorGrid.Interval = 10000.0;
             
  
             // Set series members names for the X and Y values

@@ -88,8 +88,8 @@ namespace BusinessManager
             sqlConnectionSell = new SqlCeConnection("Data Source = " + @textBoxDBPath.Text);
             // this is for organizing the order of columns in the displayed table, not choosing what to show, every column will be shown no matter if they are selected
             sqlAdapterSell = new SqlCeDataAdapter(
-                    "SELECT Products, Paid, Shipped, [Sell ID],[Selling Price], Cost, Cost_TWD, [International Shipping],[InterShipping_TWD]," +
-                    "[Domestic Shipping], [Customer Paid Shipping], Profit, Date, Quantity, Notes, [Ready to Ship], [7-11], [7-11 Pay] " +
+                    "SELECT Products, Paid, Shipped, [7-11], [Sell ID],[Selling Price], Cost, Cost_TWD, [International Shipping],[InterShipping_TWD]," +
+                    "[Domestic Shipping], [Customer Paid Shipping], Profit, Date, Quantity, Notes, [Ready to Ship], [7-11 Pay] " +
                     "FROM SellHistory", sqlConnectionSell);
             sqlConnectionSell.Open();
             sqlAdapterSell.Fill(sellHistoryTable);
