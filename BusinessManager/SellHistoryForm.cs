@@ -386,29 +386,36 @@ namespace BusinessManager
         private void buttonChart_Click(object sender, EventArgs e)
         {
             // this work for date
-            string getDate = 
-            "CONVERT(DATETIME,CAST(DATEPART(month, [Date]) AS NVARCHAR(50)) + '-' + " +
-                "CAST(DATEPART(day, [Date]) AS NVARCHAR(50)) + '-' +" +
-                "CAST(DATEPART(year, [Date]) AS NVARCHAR(50)), 121)";
+            //string getDate = 
+            //"CONVERT(DATETIME,CAST(DATEPART(month, [Date]) AS NVARCHAR(50)) + '-' + " +
+            //    "CAST(DATEPART(day, [Date]) AS NVARCHAR(50)) + '-' +" +
+            //    "CAST(DATEPART(year, [Date]) AS NVARCHAR(50)), 121)";
 
-            getDate = "CAST(DATEPART(year, [Date]) AS NVARCHAR(50)) + '-' + " +
-                "CAST(DATEPART(month, [Date]) AS NVARCHAR(50))";  
+            string getDate = "CAST(DATEPART(year, [Date]) AS NVARCHAR(50)) + '-' + " +
+                "CAST(DATEPART(month, [Date]) AS NVARCHAR(50))";
 
-            string queryString = "SELECT sum([Profit]) as [Profit], sum([Selling Price]) as [Selling Price], " +
-            getDate +  " as Quantity from SellHistory " +
+            string queryString = "SELECT sum([Profit]) as [Profit], sum([Selling Price]) as [Revenue], " +
+            getDate + " as Quantity, min(Date) as Month from SellHistory " +
             "group by " + getDate;
+
+            // sql CE doesn't support year() and month() function
+            //string queryString = "select year(Date) as y, month(Date) as m, sum(Profit) as p " +
+            //"from SellHistory group by year(Date), month(Date)";
 
             DataTable tempTable = new DataTable(); 
             SqlCeCommand cmd = new SqlCeCommand(queryString, sqlAdapter.SelectCommand.Connection);
             SqlCeDataReader reader = cmd.ExecuteReader();
             tempTable.Clear();
-            tempTable.Load(reader); 
+            tempTable.Load(reader);
+
+            tempTable.DefaultView.Sort = "[Month] ASC";
+            tempTable = tempTable.DefaultView.ToTable(); 
 
             ChartingForm chartingForm = new ChartingForm();
             string[] yNames = new string[2];
             yNames[0] = "Profit";
-            //yNames[1] = "Selling Price"; 
-            chartingForm.updateChart(tempTable, "Quantity", yNames);
+            yNames[1] = "Revenue"; 
+            chartingForm.updateChart(tempTable, "Month", yNames);
             chartingForm.ShowDialog();
         }
 
