@@ -109,6 +109,7 @@ namespace BusinessManager
 
         private void buttonNext_Click(object sender, EventArgs e)
         {
+            
             if (addNewSellForm == null)
             {
                 addNewSellForm = new AddNewSellForm();
@@ -152,6 +153,11 @@ namespace BusinessManager
             addNewSellForm.products = products;
             addNewSellForm.quantity = totalQuantity;
             addNewSellForm.cost = cost;
+            if (quantity == 0)
+            {
+                MessageBox.Show("Quantity has to be larger than 0.");
+                return;
+            }
             if (DialogResult.OK == addNewSellForm.ShowDialog())
             {
                 DataRow dr;
@@ -318,8 +324,6 @@ namespace BusinessManager
                         dr["Quantity"] = quantity;
                         dr["Current Location"] = (String)row.Cells["ColumnNewLocation"].Value;
                         inventoryTable.Rows.Add(dr);
-
-
                         row.Cells["Quantity"].Value = remainCount;
                         //SqlCeCommand cmd = new SqlCeCommand("Update Inventory set Quantity = @quantity where [Product ID] = @productID", sqlAdapterInv.SelectCommand.Connection);
                         //cmd.Parameters.AddWithValue("quantity", row.Cells["Quantity"].Value);

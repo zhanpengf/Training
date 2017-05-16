@@ -82,6 +82,12 @@
     <Compile Include="ChartingForm.Designer.cs">
       <DependentUpon>ChartingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PurchaseHistoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PurchaseHistoryForm.Designer.cs">
+      <DependentUpon>PurchaseHistoryForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="InventoryListForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChartingForm.resx">
       <DependentUpon>ChartingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PurchaseHistoryForm.resx">
+      <DependentUpon>PurchaseHistoryForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InventoryListForm.resx">
       <DependentUpon>InventoryListForm.cs</DependentUpon>

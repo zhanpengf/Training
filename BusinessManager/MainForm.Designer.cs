@@ -38,6 +38,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxDBPath = new System.Windows.Forms.TextBox();
             this.buttonBrowseDBFile = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.buttonShowPurchaseHistory = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericExchangeRate)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,10 +90,10 @@
             this.numericExchangeRate.Size = new System.Drawing.Size(82, 20);
             this.numericExchangeRate.TabIndex = 5;
             this.numericExchangeRate.Value = new decimal(new int[] {
-            30,
+            3267,
             0,
             0,
-            0});
+            131072});
             this.numericExchangeRate.ValueChanged += new System.EventHandler(this.numericExchangeRate_ValueChanged);
             // 
             // label2
@@ -141,11 +143,33 @@
             this.buttonBrowseDBFile.UseVisualStyleBackColor = true;
             this.buttonBrowseDBFile.Click += new System.EventHandler(this.buttonBrowseDBFile_Click);
             // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(165, 12);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(100, 110);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "Business with Taiwan Partners";
+            this.label4.Visible = false;
+            // 
+            // buttonShowPurchaseHistory
+            // 
+            this.buttonShowPurchaseHistory.Location = new System.Drawing.Point(12, 128);
+            this.buttonShowPurchaseHistory.Name = "buttonShowPurchaseHistory";
+            this.buttonShowPurchaseHistory.Size = new System.Drawing.Size(137, 23);
+            this.buttonShowPurchaseHistory.TabIndex = 12;
+            this.buttonShowPurchaseHistory.Text = "Show Purchase History";
+            this.buttonShowPurchaseHistory.UseVisualStyleBackColor = true;
+            this.buttonShowPurchaseHistory.Click += new System.EventHandler(this.buttonShowPurchaseHistory_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(309, 266);
+            this.Controls.Add(this.buttonShowPurchaseHistory);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.buttonBrowseDBFile);
             this.Controls.Add(this.textBoxDBPath);
             this.Controls.Add(this.label3);
@@ -177,5 +201,7 @@
         public System.Windows.Forms.Button buttonSell;
         public System.Windows.Forms.Button buttonShowSellHistory;
         public System.Windows.Forms.Button buttonUpdateLocation;
+        private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.Button buttonShowPurchaseHistory;
     }
 }

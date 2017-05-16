@@ -21,8 +21,11 @@ namespace BusinessManager
         public static MainForm mainForm; 
         public SqlCeDataAdapter sqlAdapter;
         public SqlCeConnection sqlConnection;
-        public DataTable table;
+        public DataTable sellHistoryTable;
         public SqlCeCommandBuilder cmdBuilder;
+
+        public DataTable purchaseHistoryTable;
+        public SqlCeDataAdapter sqlAdapterPurchase;
         public float exRate;
         private bool duringInit;
         public SellHistFormType formType;
@@ -31,13 +34,10 @@ namespace BusinessManager
         public SellHistoryForm()
         {
             InitializeComponent();
-            duringInit = true;
-            
+            duringInit = true;        
             this.dateTimePickerFrom.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             this.dateTimePickerTo.Value = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 23, 59, 59).AddMonths(1).AddDays(-1);
             duringInit = false; 
-
-            
         }
 
         public void SellHistoryForm_Load(object sender, EventArgs e)
@@ -240,7 +240,7 @@ namespace BusinessManager
                 if (formType == SellHistFormType.Normal)
                 {
                     int seletedRowIndex = dataGridView1.FirstDisplayedScrollingRowIndex;//dataGridView1.SelectedRows[0].Index;
-                    sqlAdapter.Update(table);
+                    sqlAdapter.Update(sellHistoryTable);
                     // reload the form
                     dateTimePicker_ValueChanged(new object(), new EventArgs());
                     dataGridView1.FirstDisplayedScrollingRowIndex = seletedRowIndex;
@@ -282,9 +282,9 @@ namespace BusinessManager
                     cmd.Parameters.AddWithValue("dtFrom", dtFrom);
                     cmd.Parameters.AddWithValue("dtTo", dtTo);
                     SqlCeDataReader reader = cmd.ExecuteReader();
-                    table.Clear();
-                    table.Load(reader);
-                    dataGridView1.DataSource = table;
+                    sellHistoryTable.Clear();
+                    sellHistoryTable.Load(reader);
+                    dataGridView1.DataSource = sellHistoryTable;
                                         
                     float profit = 0;
                     foreach (DataGridViewRow dgRow in dataGridView1.Rows)
@@ -330,7 +330,21 @@ namespace BusinessManager
         private void buttonAddShipping_Click(object sender, EventArgs e)
         {
             this.dataGridView1.CellValueChanged -= new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
-            DataRow dr = table.NewRow();
+
+            // Add to purchase history table
+            DataRow dr2 = purchaseHistoryTable.NewRow();
+            {
+                dr2["Product Name"] = "Shipping " + comboBoxShippingType.Text;
+                dr2["Purchasing Price"] = numericCost.Value;
+                dr2["Quantity"] = 1;
+                dr2["Purchasing Date"] = DateTime.Now;
+                dr2["Current Location"] = "Taiwan"; 
+            }
+            purchaseHistoryTable.Rows.Add(dr2);
+            sqlAdapterPurchase.Update(purchaseHistoryTable);
+           
+
+            DataRow dr = sellHistoryTable.NewRow();
             {
                 dr["Products"] = "Shipping " + comboBoxShippingType.Text;
                 dr["Selling Price"] = 0;
@@ -351,14 +365,14 @@ namespace BusinessManager
                 - Convert.ToSingle(dr["InterShipping_TWD"]) -
                 Convert.ToSingle(dr["Domestic Shipping"]) +
                 Convert.ToSingle(dr["Customer Paid Shipping"]);
-            table.Columns["Sell ID"].AllowDBNull = true;
-            table.Rows.Add(dr);
-//            table.AcceptChanges();
-//            Application.DoEvents();
+            sellHistoryTable.Columns["Sell ID"].AllowDBNull = true;
+            sellHistoryTable.Rows.Add(dr);
+            //            table.AcceptChanges();
+            //            Application.DoEvents();
             this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
 
             updateSum();
-            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.Rows.Count - 1; 
+            dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.Rows.Count - 1;
         }
 
         private void buttonRefresh_Click(object sender, EventArgs e)

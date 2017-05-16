@@ -18,12 +18,19 @@ namespace BusinessManager
         SqlCeCommandBuilder cmdBuilderInv;
         AddNewInventoryForm addNewInvForm;
         InventoryListForm inventoryListForm;
+        
 
         SqlCeConnection sqlConnectionSell;
         SqlCeDataAdapter sqlAdapterSell;
         DataTable sellHistoryTable = new DataTable(); 
         SqlCeCommandBuilder cmdBuilderSell;
         SellHistoryForm sellHistoryForm;
+
+        SqlCeConnection sqlConnectionPurchase;
+        SqlCeDataAdapter sqlAdapterPurchase;
+        DataTable purchaseHistoryTable = new DataTable();
+        SqlCeCommandBuilder cmdBuilderPurchase;
+        PurchaseHistoryForm purchaseHistoryForm;
 
         float exRate = 0;
 
@@ -49,9 +56,10 @@ namespace BusinessManager
             //{
             //    MessageBox.Show("Please specify the Datebase file path in the textbox.");
             //}     
-            numericExchangeRate.Value = (decimal)30.0;
+            //numericExchangeRate.Value = (decimal)30.0;
             exRate = (float)numericExchangeRate.Value;
 
+            //textBoxDBPath.Text = @"C:\Dropbox\BusinessManager\DB2\MainDB.sdf";
             textBoxDBPath.Text = @"C:\programming\Training\BusinessManager\database\MainDB.sdf";
             try
             {
@@ -95,7 +103,20 @@ namespace BusinessManager
             sqlAdapterSell.Fill(sellHistoryTable);
             cmdBuilderSell = new SqlCeCommandBuilder(sqlAdapterSell);
 
+            if ((sqlConnectionPurchase != null) && (sqlConnectionPurchase.State != ConnectionState.Closed))
+            {
+                sqlConnectionPurchase.Close();
+            }
+            sqlConnectionPurchase = new SqlCeConnection("Data Source = " + @textBoxDBPath.Text);
+            // this is for organizing the order of columns in the displayed table, not choosing what to show, every column will be shown no matter if they are selected
+            sqlAdapterPurchase = new SqlCeDataAdapter(
+                    "SELECT [Product Name],Quantity, [Purchasing Price],[Current Location],[Purchasing Date]," +
+            "[Expiration Date], [Return Date], [Purchasing Place], Notes, [Product ID], Sold FROM PurchaseHistory", sqlConnectionPurchase);
+            sqlConnectionPurchase.Open();
+            sqlAdapterPurchase.Fill(purchaseHistoryTable);
+            cmdBuilderPurchase = new SqlCeCommandBuilder(sqlAdapterPurchase);
         }
+
         private void buttonAddNew_Click(object sender, EventArgs e)
         {
             if (addNewInvForm == null)
@@ -115,21 +136,10 @@ namespace BusinessManager
 
             var source = new AutoCompleteStringCollection();
             source.AddRange(postSource);
-             
-
-            //var source = new AutoCompleteStringCollection();
-            //foreach (DataRow row in tempDT.Rows)
-            //{
-            //    source.Add(row["Product Name"].ToString()); //assuming required data is in first column
-            //}
-
-
             addNewInvForm.autoCompleteStringCollection = source;
-
             if (DialogResult.OK == addNewInvForm.ShowDialog())
             {
                 DataRow dr;
-
                 dr = inventoryTable.NewRow();
                 dr["Product Name"] = addNewInvForm.productName;
                 dr["Purchasing Price"] = addNewInvForm.purchasingPrice;
@@ -140,9 +150,22 @@ namespace BusinessManager
                 dr["Return Date"] = addNewInvForm.returnDate;
                 dr["Current Location"] = addNewInvForm.currentLocation;
                 dr["Notes"] = addNewInvForm.notes;
-
                 inventoryTable.Rows.Add(dr);
                 sqlAdapterInv.Update(inventoryTable);
+
+                DataRow dr2 = purchaseHistoryTable.NewRow();
+                //dr2.ItemArray = dr.ItemArray.Clone() as object[];
+                dr2["Product Name"] = addNewInvForm.productName;
+                dr2["Purchasing Price"] = addNewInvForm.purchasingPrice;
+                dr2["Quantity"] = addNewInvForm.quantity;
+                dr2["Expiration Date"] = addNewInvForm.expDate;
+                dr2["Purchasing Date"] = addNewInvForm.purchasingDate;
+                dr2["Purchasing Place"] = addNewInvForm.purchasingPlace;
+                dr2["Return Date"] = addNewInvForm.returnDate;
+                dr2["Current Location"] = addNewInvForm.currentLocation;
+                dr2["Notes"] = addNewInvForm.notes;
+                purchaseHistoryTable.Rows.Add(dr2);
+                sqlAdapterPurchase.Update(purchaseHistoryTable); 
                 //inventoryTable.Rows[3].ItemArray[1]
             }
         }
@@ -226,10 +249,25 @@ namespace BusinessManager
             sellHistoryForm.formType = SellHistFormType.Normal;
             sellHistoryForm.Location = new Point(15, 200);
             sellHistoryForm.exRate = exRate;
-            sellHistoryForm.table = sellHistoryTable;
+            sellHistoryForm.sellHistoryTable = sellHistoryTable;
             sellHistoryForm.sqlAdapter = sqlAdapterSell;
+            sellHistoryForm.sqlAdapterPurchase = sqlAdapterPurchase;
+            sellHistoryForm.purchaseHistoryTable = purchaseHistoryTable; 
 
-
+            if (purchaseHistoryForm == null)
+            {
+                purchaseHistoryForm = new PurchaseHistoryForm(); 
+            }
+            purchaseHistoryForm.purchaseHistoryTable = purchaseHistoryTable;
+            purchaseHistoryForm.sellHistoryForm = sellHistoryForm;
+            purchaseHistoryForm.Location = new Point(15, 200);
+            purchaseHistoryForm.Text = "Purchase History";
+            purchaseHistoryForm.inventoryTable = inventoryTable;
+            purchaseHistoryForm.sellHistoryTable = sellHistoryTable;
+            purchaseHistoryForm.sqlAdapterInv = sqlAdapterInv;
+            purchaseHistoryForm.sqlAdapterSell = sqlAdapterSell;
+            purchaseHistoryForm.sqlAdapterPurchase = sqlAdapterPurchase;
+            purchaseHistoryForm.exRate = exRate;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -238,6 +276,15 @@ namespace BusinessManager
             //Properties.Settings.Default.ExRate = (float)numericExchangeRate.Value;
             //Properties.Settings.Default.MainDBConnectionString = textBoxDBPath.Text;
             //Properties.Settings.Default.Save();
+        }
+
+        private void buttonShowPurchaseHistory_Click(object sender, EventArgs e)
+        {
+            purchaseHistoryForm.sellHistoryForm = sellHistoryForm;
+            purchaseHistoryForm.Show();
+            purchaseHistoryForm.BringToFront();
+            purchaseHistoryForm.WindowState = FormWindowState.Maximized;
+            purchaseHistoryForm.Form1_Load(new object(), new EventArgs()); 
         }
     }
 }
