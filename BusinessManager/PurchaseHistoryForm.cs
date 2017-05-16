@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlServerCe;
+using System.Data.SqlClient;
 using System.Collections; 
 
 namespace BusinessManager
@@ -319,6 +319,24 @@ namespace BusinessManager
                     }
                     var cells = dataGridView1.Rows[rowIndex].Cells;
                     foreach (DataGridViewCell cell in cells)
+                    {
+                        cell.Style.BackColor = rowColor;
+                    }
+                }
+            }
+        }
+
+        private void dataGridView1_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
+        {
+            if (dataGridViewSum != null && dataGridView1.Columns.Count == dataGridViewSum.Columns.Count)
+            {
+                dataGridViewSum.Columns[e.Column.Index].Width = e.Column.Width;
+            }
+        }
+
+    }
+}
+ls)
                     {
                         cell.Style.BackColor = rowColor;
                     }

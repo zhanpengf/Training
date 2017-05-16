@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlServerCe;
+using System.Data.SqlClient;
 using System.Collections; 
 
 namespace BusinessManager
@@ -17,11 +17,11 @@ namespace BusinessManager
         public static MainForm mainForm; 
         // a pointer to the sell history form
         public SellHistoryForm sellHistoryForm;
-        public SqlCeDataAdapter sqlAdapterInv;
-        public SqlCeDataAdapter sqlAdapterSell;
+        public SqlDataAdapter sqlAdapterInv;
+        public SqlDataAdapter sqlAdapterSell;
         public DataTable inventoryTable;
         public DataTable sellHistoryTable;
-        public SqlCeCommandBuilder cmdBuilder;
+        public SqlCommandBuilder cmdBuilder;
         public float exRate;
         AddNewSellForm addNewSellForm;
         public InvFormType formType;
@@ -252,7 +252,7 @@ namespace BusinessManager
                         {
 
                         }
-                        //SqlCeCommand cmd = new SqlCeCommand("Update Inventory set Quantity = @quantity where [Product ID] = @productID", sqlAdapterInv.SelectCommand.Connection);
+                        //SqlCommand cmd = new SqlCommand("Update Inventory set Quantity = @quantity where [Product ID] = @productID", sqlAdapterInv.SelectCommand.Connection);
                         //cmd.Parameters.AddWithValue("quantity", row.Cells["Quantity"].Value);
                         //cmd.Parameters.AddWithValue("productID", productID);
                         //int affectedRows = cmd.ExecuteNonQuery();
@@ -325,7 +325,7 @@ namespace BusinessManager
                         dr["Current Location"] = (String)row.Cells["ColumnNewLocation"].Value;
                         inventoryTable.Rows.Add(dr);
                         row.Cells["Quantity"].Value = remainCount;
-                        //SqlCeCommand cmd = new SqlCeCommand("Update Inventory set Quantity = @quantity where [Product ID] = @productID", sqlAdapterInv.SelectCommand.Connection);
+                        //SqlCommand cmd = new SqlCommand("Update Inventory set Quantity = @quantity where [Product ID] = @productID", sqlAdapterInv.SelectCommand.Connection);
                         //cmd.Parameters.AddWithValue("quantity", row.Cells["Quantity"].Value);
                         //cmd.Parameters.AddWithValue("productID", productID);
                         //int affectedRows = cmd.ExecuteNonQuery();
@@ -414,8 +414,8 @@ namespace BusinessManager
 
         private void submitQuery(string queryString)
         {
-            SqlCeCommand cmd = new SqlCeCommand(queryString, sqlAdapterInv.SelectCommand.Connection);
-            SqlCeDataReader reader = cmd.ExecuteReader();
+            SqlCommand cmd = new SqlCommand(queryString, sqlAdapterInv.SelectCommand.Connection);
+            SqlDataReader reader = cmd.ExecuteReader();
             inventoryTable.Clear();
             inventoryTable.Load(reader);
             dataGridView1.DataSource = inventoryTable;

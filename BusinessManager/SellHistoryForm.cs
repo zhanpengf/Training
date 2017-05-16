@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlServerCe;
+using System.Data.SqlClient;
 
 namespace BusinessManager
 {
@@ -19,13 +19,13 @@ namespace BusinessManager
     public partial class SellHistoryForm : Form
     {
         public static MainForm mainForm; 
-        public SqlCeDataAdapter sqlAdapter;
-        public SqlCeConnection sqlConnection;
+        public SqlDataAdapter sqlAdapter;
+        public SqlConnection sqlConnection;
         public DataTable sellHistoryTable;
-        public SqlCeCommandBuilder cmdBuilder;
+        public SqlCommandBuilder cmdBuilder;
 
         public DataTable purchaseHistoryTable;
-        public SqlCeDataAdapter sqlAdapterPurchase;
+        public SqlDataAdapter sqlAdapterPurchase;
         public float exRate;
         private bool duringInit;
         public SellHistFormType formType;
@@ -278,10 +278,10 @@ namespace BusinessManager
                     queryString = "SELECT * FROM SellHistory where Date>=@dtFrom and Date<=@dtTo";
 
 
-                    SqlCeCommand cmd = new SqlCeCommand(queryString, sqlAdapter.SelectCommand.Connection);
+                    SqlCommand cmd = new SqlCommand(queryString, sqlAdapter.SelectCommand.Connection);
                     cmd.Parameters.AddWithValue("dtFrom", dtFrom);
                     cmd.Parameters.AddWithValue("dtTo", dtTo);
-                    SqlCeDataReader reader = cmd.ExecuteReader();
+                    SqlDataReader reader = cmd.ExecuteReader();
                     sellHistoryTable.Clear();
                     sellHistoryTable.Load(reader);
                     dataGridView1.DataSource = sellHistoryTable;
@@ -417,8 +417,8 @@ namespace BusinessManager
             //"from SellHistory group by year(Date), month(Date)";
 
             DataTable tempTable = new DataTable(); 
-            SqlCeCommand cmd = new SqlCeCommand(queryString, sqlAdapter.SelectCommand.Connection);
-            SqlCeDataReader reader = cmd.ExecuteReader();
+            SqlCommand cmd = new SqlCommand(queryString, sqlAdapter.SelectCommand.Connection);
+            SqlDataReader reader = cmd.ExecuteReader();
             tempTable.Clear();
             tempTable.Load(reader);
 

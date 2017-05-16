@@ -6,30 +6,30 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlServerCe;
+using System.Data.SqlClient;
 
 namespace BusinessManager
 {
     public partial class MainForm : Form
     {
-        SqlCeConnection sqlConnectionInv;
-        SqlCeDataAdapter sqlAdapterInv;
+        SqlConnection sqlConnectionInv;
+        SqlDataAdapter sqlAdapterInv;
         DataTable inventoryTable =new DataTable();        
-        SqlCeCommandBuilder cmdBuilderInv;
+        SqlCommandBuilder cmdBuilderInv;
         AddNewInventoryForm addNewInvForm;
         InventoryListForm inventoryListForm;
         
 
-        SqlCeConnection sqlConnectionSell;
-        SqlCeDataAdapter sqlAdapterSell;
+        SqlConnection sqlConnectionSell;
+        SqlDataAdapter sqlAdapterSell;
         DataTable sellHistoryTable = new DataTable(); 
-        SqlCeCommandBuilder cmdBuilderSell;
+        SqlCommandBuilder cmdBuilderSell;
         SellHistoryForm sellHistoryForm;
 
-        SqlCeConnection sqlConnectionPurchase;
-        SqlCeDataAdapter sqlAdapterPurchase;
+        SqlConnection sqlConnectionPurchase;
+        SqlDataAdapter sqlAdapterPurchase;
         DataTable purchaseHistoryTable = new DataTable();
-        SqlCeCommandBuilder cmdBuilderPurchase;
+        SqlCommandBuilder cmdBuilderPurchase;
         PurchaseHistoryForm purchaseHistoryForm;
 
         float exRate = 0;
@@ -60,14 +60,16 @@ namespace BusinessManager
             exRate = (float)numericExchangeRate.Value;
 
             //textBoxDBPath.Text = @"C:\Dropbox\BusinessManager\DB2\MainDB.sdf";
-            textBoxDBPath.Text = @"C:\programming\Training\BusinessManager\database\MainDB.sdf";
+            //textBoxDBPath.Text = @"C:\programming\Training\BusinessManager\database\MainDB.sdf";
+
             try
             {
                 LoadDBFile();
             }
-            catch
-            {
-            }
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.ToString());
+			}
             SellHistoryForm.mainForm = this;
             InventoryListForm.mainForm = this; 
 
@@ -75,46 +77,51 @@ namespace BusinessManager
 
         void FillData()
         {
-            //sqlConnection = new SqlCeConnection(Properties.Settings.Default.MainDBConnectionString);
+            //sqlConnection = new SqlConnection(Properties.Settings.Default.MainDBConnectionString);
             if ((sqlConnectionInv!= null) && (sqlConnectionInv.State != ConnectionState.Closed))
             {
                 sqlConnectionInv.Close(); 
             }
-            sqlConnectionInv = new SqlCeConnection("Data Source = " + @textBoxDBPath.Text); //"Data Source=C:\programming\BusinessManager\database\MainDB.sdf");
+			String connectionString = "Data Source=127.0.0.1,1433;" +
+			"database=master;" +
+			"User id=SA;" +
+			"Password=Lola@2467;";
+            sqlConnectionInv = new SqlConnection(connectionString);
+
             // this is for organizing the order of columns in the displayed table, not choosing what to show, every column will be shown no matter if they are selected
-            sqlAdapterInv = new SqlCeDataAdapter(
+            sqlAdapterInv = new SqlDataAdapter(
                     "SELECT [Product Name],Quantity, [Purchasing Price],[Current Location],[Purchasing Date],"+
             "[Expiration Date], [Return Date], [Purchasing Place], Notes, [Product ID], Sold FROM Inventory", sqlConnectionInv);
             sqlConnectionInv.Open();
             sqlAdapterInv.Fill(inventoryTable);            
-            cmdBuilderInv = new SqlCeCommandBuilder(sqlAdapterInv);
+            cmdBuilderInv = new SqlCommandBuilder(sqlAdapterInv);
 
             if ((sqlConnectionSell!=null)&&(sqlConnectionSell.State != ConnectionState.Closed))
             {
                 sqlConnectionSell.Close(); 
             }
-            sqlConnectionSell = new SqlCeConnection("Data Source = " + @textBoxDBPath.Text);
+            sqlConnectionSell = new SqlConnection(connectionString);
             // this is for organizing the order of columns in the displayed table, not choosing what to show, every column will be shown no matter if they are selected
-            sqlAdapterSell = new SqlCeDataAdapter(
+            sqlAdapterSell = new SqlDataAdapter(
                     "SELECT Products, Paid, Shipped, [7-11], [Sell ID],[Selling Price], Cost, Cost_TWD, [International Shipping],[InterShipping_TWD]," +
                     "[Domestic Shipping], [Customer Paid Shipping], Profit, Date, Quantity, Notes, [Ready to Ship], [7-11 Pay] " +
                     "FROM SellHistory", sqlConnectionSell);
             sqlConnectionSell.Open();
             sqlAdapterSell.Fill(sellHistoryTable);
-            cmdBuilderSell = new SqlCeCommandBuilder(sqlAdapterSell);
+            cmdBuilderSell = new SqlCommandBuilder(sqlAdapterSell);
 
             if ((sqlConnectionPurchase != null) && (sqlConnectionPurchase.State != ConnectionState.Closed))
             {
                 sqlConnectionPurchase.Close();
             }
-            sqlConnectionPurchase = new SqlCeConnection("Data Source = " + @textBoxDBPath.Text);
-            // this is for organizing the order of columns in the displayed table, not choosing what to show, every column will be shown no matter if they are selected
-            sqlAdapterPurchase = new SqlCeDataAdapter(
-                    "SELECT [Product Name],Quantity, [Purchasing Price],[Current Location],[Purchasing Date]," +
-            "[Expiration Date], [Return Date], [Purchasing Place], Notes, [Product ID], Sold FROM PurchaseHistory", sqlConnectionPurchase);
-            sqlConnectionPurchase.Open();
-            sqlAdapterPurchase.Fill(purchaseHistoryTable);
-            cmdBuilderPurchase = new SqlCeCommandBuilder(sqlAdapterPurchase);
+            sqlConnectionPurchase = new SqlConnection(connectionString);
+			// this is for organizing the order of columns in the displayed table, not choosing what to show, every column will be shown no matter if they are selected
+			sqlAdapterPurchase = new SqlDataAdapter(
+			        "SELECT [Product Name],Quantity, [Purchasing Price],[Current Location],[Purchasing Date]," +
+			"[Expiration Date], [Return Date], [Purchasing Place], Notes, [Product ID], Sold FROM PurchaseHistory", sqlConnectionPurchase);
+			sqlConnectionPurchase.Open();
+			sqlAdapterPurchase.Fill(purchaseHistoryTable);
+            cmdBuilderPurchase = new SqlCommandBuilder(sqlAdapterPurchase);
         }
 
         private void buttonAddNew_Click(object sender, EventArgs e)
@@ -284,7 +291,7 @@ namespace BusinessManager
             purchaseHistoryForm.Show();
             purchaseHistoryForm.BringToFront();
             purchaseHistoryForm.WindowState = FormWindowState.Maximized;
-            purchaseHistoryForm.Form1_Load(new object(), new EventArgs()); 
+            //purchaseHistoryForm.Form1_Load(new object(), new EventArgs()); 
         }
     }
 }
