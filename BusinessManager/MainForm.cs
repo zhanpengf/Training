@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,15 +10,38 @@ using System.Data.SqlClient;
 
 namespace BusinessManager
 {
+
     public partial class MainForm : Form
     {
+		public static String connectionString = "Data Source=127.0.0.1,1433;" +
+			"database=master;" +
+			"User id=SA;" +
+			"Password=Lola@2467;";
+        
+        public static void submitQuery(string queryString, ref DataTable dataTable, SqlDataAdapter sqlAdapter)
+		{
+			using (SqlConnection sqlConnection = new SqlConnection(MainForm.connectionString))
+			{
+                dataTable.Clear();
+				SqlCommand cmd = new SqlCommand(queryString, sqlConnection);
+				sqlAdapter.SelectCommand = cmd;
+                sqlAdapter.Fill(dataTable);
+			}
+		}
+
+        public static void updateGridViewWithTable(ref DataGridView dataGridView, DataTable dataTable)
+        {
+			BindingSource bs = new BindingSource();
+			bs.DataSource = dataTable;
+			dataGridView.DataSource = bs;
+        }
+
         SqlConnection sqlConnectionInv;
         SqlDataAdapter sqlAdapterInv;
         DataTable inventoryTable =new DataTable();        
         SqlCommandBuilder cmdBuilderInv;
         AddNewInventoryForm addNewInvForm;
         InventoryListForm inventoryListForm;
-        
 
         SqlConnection sqlConnectionSell;
         SqlDataAdapter sqlAdapterSell;
@@ -82,10 +105,7 @@ namespace BusinessManager
             {
                 sqlConnectionInv.Close(); 
             }
-			String connectionString = "Data Source=127.0.0.1,1433;" +
-			"database=master;" +
-			"User id=SA;" +
-			"Password=Lola@2467;";
+
             sqlConnectionInv = new SqlConnection(connectionString);
 
             // this is for organizing the order of columns in the displayed table, not choosing what to show, every column will be shown no matter if they are selected

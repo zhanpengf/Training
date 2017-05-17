@@ -412,15 +412,24 @@ namespace BusinessManager
             submitQuery(queryString);             
         }
 
-        private void submitQuery(string queryString)
-        {
-            SqlCommand cmd = new SqlCommand(queryString, sqlAdapterInv.SelectCommand.Connection);
-            SqlDataReader reader = cmd.ExecuteReader();
-            inventoryTable.Clear();
-            inventoryTable.Load(reader);
-            dataGridView1.DataSource = inventoryTable;
-            updateSum(); 
-        }
+        //private void submitQuery(string queryString)
+        //{
+        //    SqlCommand cmd = new SqlCommand(queryString, sqlAdapterInv.SelectCommand.Connection);
+        //    SqlDataReader reader = cmd.ExecuteReader();
+        //    inventoryTable.Clear();
+        //    inventoryTable.Load(reader);
+        //    dataGridView1.DataSource = inventoryTable;
+        //    updateSum();
+        //}
+
+		private void submitQuery(string queryString)
+		{
+            MainForm.submitQuery(queryString, ref inventoryTable, sqlAdapterInv);
+			formLoaded = false;
+            MainForm.updateGridViewWithTable(ref dataGridView1, inventoryTable);
+			formLoaded = true;
+			updateSum();
+		}
 
         private void checkBoxSelectAll_CheckedChanged(object sender, EventArgs e)
         {

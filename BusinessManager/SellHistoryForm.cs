@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -281,10 +281,13 @@ namespace BusinessManager
                     SqlCommand cmd = new SqlCommand(queryString, sqlAdapter.SelectCommand.Connection);
                     cmd.Parameters.AddWithValue("dtFrom", dtFrom);
                     cmd.Parameters.AddWithValue("dtTo", dtTo);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    sellHistoryTable.Clear();
-                    sellHistoryTable.Load(reader);
-                    dataGridView1.DataSource = sellHistoryTable;
+					SqlDataReader reader = cmd.ExecuteReader();
+					sellHistoryTable.Clear();
+					sellHistoryTable.Load(reader);
+     //               sellHistoryTable.Clear();
+					//sqlAdapter.SelectCommand = cmd;
+					//sqlAdapter.Fill(sellHistoryTable);
+                    MainForm.updateGridViewWithTable(ref dataGridView1, sellHistoryTable);
                                         
                     float profit = 0;
                     foreach (DataGridViewRow dgRow in dataGridView1.Rows)
@@ -412,16 +415,10 @@ namespace BusinessManager
             getDate + " as Quantity, min(Date) as Month from SellHistory " +
             "group by " + getDate;
 
-            // sql CE doesn't support year() and month() function
-            //string queryString = "select year(Date) as y, month(Date) as m, sum(Profit) as p " +
-            //"from SellHistory group by year(Date), month(Date)";
-
             DataTable tempTable = new DataTable(); 
-            SqlCommand cmd = new SqlCommand(queryString, sqlAdapter.SelectCommand.Connection);
-            SqlDataReader reader = cmd.ExecuteReader();
-            tempTable.Clear();
-            tempTable.Load(reader);
-
+            //SqlCommand cmd = new SqlCommand(queryString, sqlAdapter.SelectCommand.Connection);
+            //SqlDataReader reader = cmd.ExecuteReader();
+            MainForm.submitQuery(queryString, ref tempTable, sqlAdapter);
             tempTable.DefaultView.Sort = "[Month] ASC";
             tempTable = tempTable.DefaultView.ToTable(); 
 

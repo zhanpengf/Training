@@ -49,7 +49,7 @@
             this.buttonAddNewToInv.Name = "buttonAddNewToInv";
             this.buttonAddNewToInv.Size = new System.Drawing.Size(137, 23);
             this.buttonAddNewToInv.TabIndex = 0;
-            this.buttonAddNewToInv.Text = "Add New to Inventory";
+            this.buttonAddNewToInv.Text = "冯展鹏"; //"Add New to Inventory";
             this.buttonAddNewToInv.UseVisualStyleBackColor = true;
             this.buttonAddNewToInv.Click += new System.EventHandler(this.buttonAddNew_Click);
             // 
