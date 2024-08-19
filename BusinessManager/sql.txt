@@ -1,0 +1,4 @@
+select count(*) as Quantity, sum([Purchasing Price]) as [Purchasing Price] from Inventory
+
+select  [Purchasing Date], count(*) as Quantity  from Inventory
+group by [Purchasing Date]

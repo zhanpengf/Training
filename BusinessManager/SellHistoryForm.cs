@@ -405,12 +405,26 @@ namespace BusinessManager
             //    "CAST(DATEPART(day, [Date]) AS NVARCHAR(50)) + '-' +" +
             //    "CAST(DATEPART(year, [Date]) AS NVARCHAR(50)), 121)";
 
+
+
             string getDate = "CAST(DATEPART(year, [Date]) AS NVARCHAR(50)) + '-' + " +
                 "CAST(DATEPART(month, [Date]) AS NVARCHAR(50))";
 
-            string queryString = "SELECT sum([Profit]) as [Profit], sum([Selling Price]) as [Revenue], " +
-            getDate + " as Quantity, min(Date) as Month from SellHistory " +
-            "group by " + getDate;
+            string queryString = "";
+            DateTime dtFrom = dateTimePickerFrom.Value;
+            DateTime dtTo = dateTimePickerTo.Value;
+            if (checkBoxChartUseDatePicker.Checked)
+            {
+                queryString = "SELECT sum([Profit]) as [Profit], sum([Selling Price]) as [Revenue], " +
+                "min(Date) as Month from SellHistory where Date>=@dtFrom and Date<=@dtTo group by " + getDate;
+            }
+            else
+            {
+                queryString = "SELECT sum([Profit]) as [Profit], sum([Selling Price]) as [Revenue], " +
+                  "min(Date) as Month from SellHistory group by " + getDate;
+            }
+            
+
 
             // sql CE doesn't support year() and month() function
             //string queryString = "select year(Date) as y, month(Date) as m, sum(Profit) as p " +
@@ -418,6 +432,11 @@ namespace BusinessManager
 
             DataTable tempTable = new DataTable(); 
             SqlCeCommand cmd = new SqlCeCommand(queryString, sqlAdapter.SelectCommand.Connection);
+            if (checkBoxChartUseDatePicker.Checked)
+            {
+                cmd.Parameters.AddWithValue("dtFrom", dtFrom);
+                cmd.Parameters.AddWithValue("dtTo", dtTo);
+            }
             SqlCeDataReader reader = cmd.ExecuteReader();
             tempTable.Clear();
             tempTable.Load(reader);

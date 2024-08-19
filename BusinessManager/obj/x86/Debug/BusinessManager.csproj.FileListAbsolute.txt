@@ -18,14 +18,14 @@ C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.exe
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.pdb
 C:\programming\Training\BusinessManager\bin\Debug\BusinessManager.exe
 C:\programming\Training\BusinessManager\bin\Debug\BusinessManager.pdb
-C:\programming\Training\BusinessManager\obj\x86\Debug\ResolveAssemblyReference.cache
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.AddNewInventoryForm.resources
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.AddNewSellForm.resources
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.InventoryListForm.resources
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.MainForm.resources
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.Properties.Resources.resources
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.SellHistoryForm.resources
-C:\programming\Training\BusinessManager\obj\x86\Debug\GenerateResource.read.1.tlog
-C:\programming\Training\BusinessManager\obj\x86\Debug\GenerateResource.write.1.tlog
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.ChartingForm.resources
 C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.PurchaseHistoryForm.resources
+C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.csprojAssemblyReference.cache
+C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.csproj.GenerateResource.cache
+C:\programming\Training\BusinessManager\obj\x86\Debug\BusinessManager.csproj.CoreCompileInputs.cache

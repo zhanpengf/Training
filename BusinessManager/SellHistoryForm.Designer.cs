@@ -53,6 +53,7 @@
             this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
+            this.checkBoxChartUseDatePicker = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -72,9 +73,9 @@
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
@@ -86,8 +87,9 @@
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.checkBoxChartUseDatePicker);
             this.panel1.Controls.Add(this.buttonChart);
             this.panel1.Controls.Add(this.buttonUpdateLocation);
             this.panel1.Controls.Add(this.buttonSell);
@@ -246,7 +248,7 @@
             // 
             // buttonUpdateSum
             // 
-            this.buttonUpdateSum.Location = new System.Drawing.Point(609, 58);
+            this.buttonUpdateSum.Location = new System.Drawing.Point(768, 43);
             this.buttonUpdateSum.Name = "buttonUpdateSum";
             this.buttonUpdateSum.Size = new System.Drawing.Size(75, 23);
             this.buttonUpdateSum.TabIndex = 14;
@@ -257,9 +259,9 @@
             // 
             // dataGridViewSum
             // 
-            this.dataGridViewSum.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewSum.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewSum.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewSum.ColumnHeadersVisible = false;
             this.dataGridViewSum.Location = new System.Drawing.Point(0, 3);
@@ -342,6 +344,16 @@
             this.dateTimePickerFrom.TabIndex = 6;
             this.dateTimePickerFrom.ValueChanged += new System.EventHandler(this.dateTimePicker_ValueChanged);
             // 
+            // checkBoxChartUseDatePicker
+            // 
+            this.checkBoxChartUseDatePicker.AutoSize = true;
+            this.checkBoxChartUseDatePicker.Location = new System.Drawing.Point(566, 43);
+            this.checkBoxChartUseDatePicker.Name = "checkBoxChartUseDatePicker";
+            this.checkBoxChartUseDatePicker.Size = new System.Drawing.Size(104, 17);
+            this.checkBoxChartUseDatePicker.TabIndex = 21;
+            this.checkBoxChartUseDatePicker.Text = "Use Date Picker";
+            this.checkBoxChartUseDatePicker.UseVisualStyleBackColor = true;
+            // 
             // SellHistoryForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -393,5 +405,6 @@
         private System.Windows.Forms.Button buttonSell;
         private System.Windows.Forms.Button buttonAddNewToInv;
         private System.Windows.Forms.Button buttonChart;
+        private System.Windows.Forms.CheckBox checkBoxChartUseDatePicker;
     }
 }
